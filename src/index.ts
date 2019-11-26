@@ -3,6 +3,8 @@ import * as Newdex from './exchange/newdex';
 import * as WhaleEx from './exchange/whaleex';
 import * as Binance from './exchange/binance';
 
+export { ExchangeInfo } from './pojo/exchange_info';
+
 /**
  * Get all informaton about a crypto exchange.
  *
