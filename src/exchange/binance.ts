@@ -20,7 +20,7 @@ export async function getPairs(): Promise<BinancePairInfo[]> {
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
     p.exchange_name = 'Binance';
-    p.raw_rair = extractRawPair(p);
+    p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
     /* eslint-enable no-param-reassign */
   });
@@ -35,8 +35,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     restful_endpoint: 'https://api.binance.com',
     is_dex: false,
     status: true,
-    maker_fee: 0.002,
-    taker_fee: 0.002,
+    maker_fee: 0.001, // see https://www.binance.com/en/fee/schedule
+    taker_fee: 0.001,
     pairs: [],
   } as ExchangeInfo;
 

@@ -5,6 +5,7 @@ Get everything you need to know about a crypto exchange.
 ## How to use
 
 ```javascript
+/* eslint-disable import/no-unresolved,no-console */
 const getExchangeInfo = require('exchange-info').default;
 
 (async () => {
@@ -21,6 +22,9 @@ npx exchange-info --exchange Newdex
 
 ## Supported Exchanges
 
+- Binance
+- Bitfinex
+- Bitstamp
 - Newdex
 - WhaleEx
-- Binance
+- bitFlyer

@@ -61,7 +61,7 @@ export async function getPairs(): Promise<NewdexPairInfo[]> {
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
     p.exchange_name = 'Newdex';
-    p.raw_rair = extractRawPair(p);
+    p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
     /* eslint-enable no-param-reassign */
   });

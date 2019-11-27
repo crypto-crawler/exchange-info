@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 export interface PairInfo {
   exchange_name: string;
-  raw_rair: string;
+  raw_pair: string;
   normalized_pair: string;
   [key: string]: any;
 }
@@ -42,4 +42,14 @@ export interface BinancePairInfo extends PairInfo {
   status: string;
   baseAsset: string;
   quoteAsset: string;
+}
+
+export interface BitstampPairInfo extends PairInfo {
+  base_decimals: number;
+  minimum_order: string;
+  name: string;
+  counter_decimals: number;
+  trading: string;
+  url_symbol: string;
+  description: string;
 }

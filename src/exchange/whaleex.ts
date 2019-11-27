@@ -20,7 +20,7 @@ export async function getPairs(): Promise<WhaleExPairInfo[]> {
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
     p.exchange_name = 'WhaleEx';
-    p.raw_rair = extractRawPair(p);
+    p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
     /* eslint-enable no-param-reassign */
   });
@@ -39,7 +39,7 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     is_dex: true,
     blockchain: 'EOS',
     status: true,
-    maker_fee: 0.001,
+    maker_fee: 0.001, // see https://whaleex.zendesk.com/hc/zh-cn/articles/360015324891-%E4%BA%A4%E6%98%93%E6%89%8B%E7%BB%AD%E8%B4%B9
     taker_fee: 0.001,
     pairs: [],
   } as ExchangeInfo;
