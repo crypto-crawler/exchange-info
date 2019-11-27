@@ -148,3 +148,8 @@ export interface ZaifPairInfo extends PairInfo {
   seq: number;
   title: string;
 }
+
+export interface ZBPairInfo extends PairInfo {
+  amountScale: number;
+  priceScale: number;
+}

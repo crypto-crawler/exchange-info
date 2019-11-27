@@ -13,6 +13,7 @@ import * as Poloniex from './exchange/poloniex';
 import * as Upbit from './exchange/upbit';
 import * as WhaleEx from './exchange/whaleex';
 import * as Zaif from './exchange/zaif';
+import * as ZB from './exchange/zb';
 
 export * from './pojo/pair_info';
 export { ExchangeInfo } from './pojo/exchange_info';
@@ -30,6 +31,7 @@ export const EXCHANGES = [
   'Upbit',
   'WhaleEx',
   'Zaif',
+  'ZB',
   'bitFlyer',
 ] as const;
 
@@ -68,6 +70,8 @@ export default async function getExchangeInfo(
       return WhaleEx.getExchangeInfo();
     case 'Zaif':
       return Zaif.getExchangeInfo();
+    case 'ZB':
+      return ZB.getExchangeInfo();
     case 'bitFlyer':
       return BitFlyer.getExchangeInfo();
     default:

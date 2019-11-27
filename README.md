@@ -33,4 +33,6 @@ npx exchange-info --exchange Newdex
 - Poloniex
 - Upbit
 - WhaleEx
+- Zaif
+- ZB
 - bitFlyer
