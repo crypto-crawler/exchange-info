@@ -11,14 +11,17 @@ import * as WhaleEx from './exchange/whaleex';
 export * from './pojo/pair_info';
 export { ExchangeInfo } from './pojo/exchange_info';
 
-export type SupportedExchange =
-  | 'Binance'
-  | 'Bitfinex'
-  | 'Bitstamp'
-  | 'Coincheck'
-  | 'Newdex'
-  | 'WhaleEx'
-  | 'bitFlyer';
+export const EXCHANGES = [
+  'Binance',
+  'Bitfinex',
+  'Bitstamp',
+  'Coincheck',
+  'Newdex',
+  'WhaleEx',
+  'bitFlyer',
+] as const;
+
+export type SupportedExchange = typeof EXCHANGES[number];
 
 /**
  * Get all informaton about a crypto exchange.

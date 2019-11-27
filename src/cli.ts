@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 import yargs from 'yargs';
-import getExchangeInfo, { SupportedExchange } from './index';
+import getExchangeInfo, { SupportedExchange, EXCHANGES } from './index';
 
 const { argv } = yargs.options({
   exchange: {
-    choices: ['Binance', 'Bitfinex', 'Bitstamp', 'Coincheck', 'Newdex', 'WhaleEx', 'bitFlyer'],
+    choices: EXCHANGES,
     type: 'string',
     demandOption: true,
   },
