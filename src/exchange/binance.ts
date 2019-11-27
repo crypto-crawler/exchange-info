@@ -19,7 +19,6 @@ export async function getPairs(): Promise<BinancePairInfo[]> {
 
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
-    p.exchange_name = 'Binance';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
     /* eslint-enable no-param-reassign */

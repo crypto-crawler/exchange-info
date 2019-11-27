@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 export interface PairInfo {
-  exchange_name: string;
   raw_pair: string;
   normalized_pair: string;
   [key: string]: any;

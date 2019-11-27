@@ -4,7 +4,7 @@ import { ExchangeInfo } from '../pojo/exchange_info';
 import { PairInfo } from '../pojo/pair_info';
 
 function extractNormalizedPair(pairInfo: PairInfo): string {
-  const rawPair = pairInfo.raw_rair.toUpperCase();
+  const rawPair = pairInfo.raw_pair.toUpperCase();
   if (rawPair.includes(':')) {
     return rawPair.replace(/:/g, '_').toUpperCase();
   }
@@ -15,14 +15,10 @@ export async function getPairs(): Promise<PairInfo[]> {
   const response = await axios.get('https://api.bitfinex.com/v1/symbols');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
-  const arr = (response.data as string[]).map(
-    x => ({ exchange_name: 'Bitfinex', raw_pair: x } as PairInfo),
-  );
+  const arr = (response.data as string[]).map(x => ({ raw_pair: x } as PairInfo));
 
   arr.forEach(p => {
-    /* eslint-disable no-param-reassign */
-    p.normalized_pair = extractNormalizedPair(p);
-    /* eslint-enable no-param-reassign */
+    p.normalized_pair = extractNormalizedPair(p); // eslint-disable-line no-param-reassign
   });
   return arr;
 }

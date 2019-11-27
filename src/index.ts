@@ -1,17 +1,21 @@
 import { ExchangeInfo } from './pojo/exchange_info';
-import * as Newdex from './exchange/newdex';
-import * as WhaleEx from './exchange/whaleex';
+
 import * as Binance from './exchange/binance';
 import * as Bitfinex from './exchange/bitfinex';
-import * as BitFlyer from './exchange/bitflyer';
 import * as Bitstamp from './exchange/bitstamp';
+import * as BitFlyer from './exchange/bitflyer';
+import * as Coincheck from './exchange/coincheck';
+import * as Newdex from './exchange/newdex';
+import * as WhaleEx from './exchange/whaleex';
 
+export * from './pojo/pair_info';
 export { ExchangeInfo } from './pojo/exchange_info';
 
 export type SupportedExchange =
   | 'Binance'
   | 'Bitfinex'
   | 'Bitstamp'
+  | 'Coincheck'
   | 'Newdex'
   | 'WhaleEx'
   | 'bitFlyer';
@@ -31,6 +35,8 @@ export default async function getExchangeInfo(
       return Bitfinex.getExchangeInfo();
     case 'Bitstamp':
       return Bitstamp.getExchangeInfo();
+    case 'Coincheck':
+      return Coincheck.getExchangeInfo();
     case 'Newdex':
       return Newdex.getExchangeInfo();
     case 'WhaleEx':

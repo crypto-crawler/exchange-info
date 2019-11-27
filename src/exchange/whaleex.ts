@@ -19,7 +19,6 @@ export async function getPairs(): Promise<WhaleExPairInfo[]> {
 
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
-    p.exchange_name = 'WhaleEx';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
     /* eslint-enable no-param-reassign */

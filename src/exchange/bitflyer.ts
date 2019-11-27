@@ -23,7 +23,6 @@ export async function getPairs(): Promise<PairInfo[]> {
     const rawPair = extractRawPair(rawInfo);
     const normalizedPair = extractNormalizedPair(rawInfo);
     const pairInfo = {
-      exchange_name: 'bitFlyer',
       raw_pair: rawPair,
       normalized_pair: normalizedPair,
     } as PairInfo;

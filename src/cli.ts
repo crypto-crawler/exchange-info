@@ -5,7 +5,7 @@ import getExchangeInfo, { SupportedExchange } from './index';
 
 const { argv } = yargs.options({
   exchange: {
-    choices: ['Binance', 'Bitfinex', 'Bitstamp', 'Newdex', 'WhaleEx', 'bitFlyer'],
+    choices: ['Binance', 'Bitfinex', 'Bitstamp', 'Coincheck', 'Newdex', 'WhaleEx', 'bitFlyer'],
     type: 'string',
     demandOption: true,
   },
