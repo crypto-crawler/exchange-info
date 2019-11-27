@@ -15,6 +15,7 @@ export async function getPairs(): Promise<BikiPairInfo[]> {
   const response = await axios.get('https://openapi.biki.com/open/api/common/symbols');
   assert.equal(response.status, 200);
   assert.equal(response.data.code, '0');
+  assert.equal(response.data.msg, 'suc');
   const arr = response.data.data as Array<BikiPairInfo>;
 
   arr.forEach(p => {
