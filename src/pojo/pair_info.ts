@@ -52,3 +52,15 @@ export interface BitstampPairInfo extends PairInfo {
   url_symbol: string;
   description: string;
 }
+
+export interface CoinbasePairInfo extends PairInfo {
+  id: string;
+  base_currency: string;
+  quote_currency: string;
+  base_min_size: string;
+  base_max_size: string;
+  quote_increment: string;
+  display_name: string;
+  margin_enabled: boolean;
+  status: string;
+}

@@ -4,6 +4,7 @@ import * as Binance from './exchange/binance';
 import * as Bitfinex from './exchange/bitfinex';
 import * as Bitstamp from './exchange/bitstamp';
 import * as BitFlyer from './exchange/bitflyer';
+import * as Coinbase from './exchange/coinbase';
 import * as Coincheck from './exchange/coincheck';
 import * as Newdex from './exchange/newdex';
 import * as WhaleEx from './exchange/whaleex';
@@ -15,6 +16,7 @@ export const EXCHANGES = [
   'Binance',
   'Bitfinex',
   'Bitstamp',
+  'Coinbase',
   'Coincheck',
   'Newdex',
   'WhaleEx',
@@ -38,6 +40,8 @@ export default async function getExchangeInfo(
       return Bitfinex.getExchangeInfo();
     case 'Bitstamp':
       return Bitstamp.getExchangeInfo();
+    case 'Coinbase':
+      return Coinbase.getExchangeInfo();
     case 'Coincheck':
       return Coincheck.getExchangeInfo();
     case 'Newdex':
