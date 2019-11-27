@@ -130,3 +130,21 @@ export interface UpbitPairInfo extends PairInfo {
   korean_name: string;
   english_name: string;
 }
+
+export interface ZaifPairInfo extends PairInfo {
+  aux_unit_point: number;
+  item_japanese: '\u30d3\u30c3\u30c8\u30b3\u30a4\u30f3';
+  aux_unit_step: number;
+  description: string;
+  item_unit_min: number;
+  event_number: number;
+  currency_pair: string;
+  is_token: boolean;
+  aux_unit_min: number;
+  aux_japanese: string;
+  id: number;
+  item_unit_step: number;
+  name: string;
+  seq: number;
+  title: string;
+}
