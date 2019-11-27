@@ -1,5 +1,5 @@
 import { ExchangeInfo } from './pojo/exchange_info';
-
+import * as Biki from './exchange/biki';
 import * as Binance from './exchange/binance';
 import * as Bitfinex from './exchange/bitfinex';
 import * as Bitstamp from './exchange/bitstamp';
@@ -20,6 +20,7 @@ export * from './pojo/pair_info';
 export { ExchangeInfo } from './pojo/exchange_info';
 
 export const EXCHANGES = [
+  'Biki',
   'Binance',
   'Bitfinex',
   'Bitstamp',
@@ -48,6 +49,8 @@ export default async function getExchangeInfo(
   exchangeName: SupportedExchange,
 ): Promise<ExchangeInfo> {
   switch (exchangeName) {
+    case 'Biki':
+      return Biki.getExchangeInfo();
     case 'Binance':
       return Binance.getExchangeInfo();
     case 'Bitfinex':

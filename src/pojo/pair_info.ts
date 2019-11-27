@@ -153,3 +153,12 @@ export interface ZBPairInfo extends PairInfo {
   amountScale: number;
   priceScale: number;
 }
+
+export interface BikiPairInfo extends PairInfo {
+  symbol: string;
+  count_coin: string;
+  amount_precision: number;
+  base_coin: string;
+  limit_volume_min: string;
+  price_precision: number;
+}
