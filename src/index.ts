@@ -6,6 +6,7 @@ import * as Bitstamp from './exchange/bitstamp';
 import * as BitFlyer from './exchange/bitflyer';
 import * as Coinbase from './exchange/coinbase';
 import * as Coincheck from './exchange/coincheck';
+import * as Huobi from './exchange/huobi';
 import * as Newdex from './exchange/newdex';
 import * as WhaleEx from './exchange/whaleex';
 
@@ -18,6 +19,7 @@ export const EXCHANGES = [
   'Bitstamp',
   'Coinbase',
   'Coincheck',
+  'Huobi',
   'Newdex',
   'WhaleEx',
   'bitFlyer',
@@ -44,6 +46,8 @@ export default async function getExchangeInfo(
       return Coinbase.getExchangeInfo();
     case 'Coincheck':
       return Coincheck.getExchangeInfo();
+    case 'Huobi':
+      return Huobi.getExchangeInfo();
     case 'Newdex':
       return Newdex.getExchangeInfo();
     case 'WhaleEx':

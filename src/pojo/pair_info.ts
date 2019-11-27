@@ -64,3 +64,17 @@ export interface CoinbasePairInfo extends PairInfo {
   margin_enabled: boolean;
   status: string;
 }
+
+export interface HuobiPairInfo extends PairInfo {
+  'base-currency': string;
+  'quote-currency': string;
+  'price-precision': number;
+  'amount-precision': number;
+  'symbol-partition': string;
+  symbol: string;
+  state: string;
+  'value-precision': number;
+  'min-order-amt': number;
+  'max-order-amt': number;
+  'min-order-value': number;
+}
