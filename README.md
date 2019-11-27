@@ -25,6 +25,10 @@ npx exchange-info --exchange Newdex
 - Binance
 - Bitfinex
 - Bitstamp
+- Coinbase
+- Coincheck
+- Huobi
 - Newdex
+- OKEx_Spot
 - WhaleEx
 - bitFlyer

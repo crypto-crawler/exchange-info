@@ -78,3 +78,36 @@ export interface HuobiPairInfo extends PairInfo {
   'max-order-amt': number;
   'min-order-value': number;
 }
+
+export interface OKExSpotPairInfo extends PairInfo {
+  baseCurrency: number;
+  brokerId: number;
+  entityMarginStatus: number;
+  entitySpotStatus: number;
+  envType: number;
+  groupId: number;
+  id: number;
+  isMarginOpen: boolean;
+  listDisplay: number;
+  marginRiskPreRatio: 1.2;
+  marginRiskRatio: 1.1;
+  marketFrom: number;
+  matcherId: number;
+  maxMarginLeverage: number;
+  maxPriceDigit: number;
+  maxSizeDigit: number;
+  mergeTypes: string;
+  minTradeSize: number;
+  newTrade: boolean;
+  oldTrade: boolean;
+  online: number;
+  productId: number;
+  quoteCurrency: number;
+  quoteIncrement: string;
+  quotePrecision: number;
+  sort: number;
+  switchStatus: string;
+  symbol: string;
+  tradeStatus: number;
+  tradingMode: number;
+}

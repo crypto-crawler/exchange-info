@@ -8,6 +8,7 @@ import * as Coinbase from './exchange/coinbase';
 import * as Coincheck from './exchange/coincheck';
 import * as Huobi from './exchange/huobi';
 import * as Newdex from './exchange/newdex';
+import * as OKExSpot from './exchange/okex_spot';
 import * as WhaleEx from './exchange/whaleex';
 
 export * from './pojo/pair_info';
@@ -21,6 +22,7 @@ export const EXCHANGES = [
   'Coincheck',
   'Huobi',
   'Newdex',
+  'OKEx_Spot',
   'WhaleEx',
   'bitFlyer',
 ] as const;
@@ -50,6 +52,8 @@ export default async function getExchangeInfo(
       return Huobi.getExchangeInfo();
     case 'Newdex':
       return Newdex.getExchangeInfo();
+    case 'OKEx_Spot':
+      return OKExSpot.getExchangeInfo();
     case 'WhaleEx':
       return WhaleEx.getExchangeInfo();
     case 'bitFlyer':
