@@ -162,3 +162,21 @@ export interface BikiPairInfo extends PairInfo {
   limit_volume_min: string;
   price_precision: number;
 }
+
+export interface KrakenPairInfo extends PairInfo {
+  altname: string;
+  wsname: string;
+  aclass_base: string;
+  base: string;
+  aclass_quote: string;
+  quote: string;
+  lot: string;
+  pair_decimals: number;
+  lot_decimals: number;
+  lot_multiplier: number;
+  fees: number[][];
+  fees_maker: number[][];
+  fee_volume_currency: string;
+  margin_call: number;
+  margin_stop: number;
+}
