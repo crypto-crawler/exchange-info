@@ -7,6 +7,7 @@ import * as BitFlyer from './exchange/bitflyer';
 import * as Coinbase from './exchange/coinbase';
 import * as Coincheck from './exchange/coincheck';
 import * as Huobi from './exchange/huobi';
+import * as MXC from './exchange/mxc';
 import * as Newdex from './exchange/newdex';
 import * as OKExSpot from './exchange/okex_spot';
 import * as Poloniex from './exchange/poloniex';
@@ -25,6 +26,7 @@ export const EXCHANGES = [
   'Coinbase',
   'Coincheck',
   'Huobi',
+  'MXC',
   'Newdex',
   'OKEx_Spot',
   'Poloniex',
@@ -58,6 +60,8 @@ export default async function getExchangeInfo(
       return Coincheck.getExchangeInfo();
     case 'Huobi':
       return Huobi.getExchangeInfo();
+    case 'MXC':
+      return MXC.getExchangeInfo();
     case 'Newdex':
       return Newdex.getExchangeInfo();
     case 'OKEx_Spot':
