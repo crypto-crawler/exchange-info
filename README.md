@@ -30,5 +30,7 @@ npx exchange-info --exchange Newdex
 - Huobi
 - Newdex
 - OKEx_Spot
+- Poloniex
+- Upbit
 - WhaleEx
 - bitFlyer

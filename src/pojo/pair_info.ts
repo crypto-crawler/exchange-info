@@ -124,3 +124,9 @@ export interface PoloniexPairInfo extends PairInfo {
   high24hr: string;
   low24hr: string;
 }
+
+export interface UpbitPairInfo extends PairInfo {
+  market: string;
+  korean_name: string;
+  english_name: string;
+}
