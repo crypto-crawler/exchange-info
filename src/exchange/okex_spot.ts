@@ -33,7 +33,7 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     name: 'OKEx_Spot',
     api_doc: 'https://github.com/okcoin-okex/API-docs-OKEx.com',
     websocket_endpoint: 'wss://real.okex.com:10441/websocket?compress=true',
-    restful_endpoint: 'https://www.okex.com/api/v2',
+    restful_endpoint: 'https://www.okex.com/api/v2/spot',
     is_dex: false,
     status: true,
     maker_fee: 0.001, // see https://www.okex.com/pages/products/fees.html
