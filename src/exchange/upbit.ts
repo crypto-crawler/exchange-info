@@ -33,7 +33,7 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
   const info = {
     name: 'Upbit',
     api_doc: 'https://docs.upbit.com/',
-    websocket_endpoint: 'wss://ws.newdex.io',
+    websocket_endpoint: 'wss://crix-ws.upbit.com/websocket',
     restful_endpoint: 'https://api.upbit.com/v1',
     is_dex: false,
     status: true,
