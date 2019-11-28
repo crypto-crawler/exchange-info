@@ -33,7 +33,7 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
   const info = {
     name: 'WhaleEx',
     api_doc: 'https://github.com/WhaleEx/API',
-    websocket_endpoint: 'wss://ws.newdex.io',
+    websocket_endpoint: 'wss://www.whaleex.com/ws/websocket',
     restful_endpoint: 'https://api.whaleex.com',
     is_dex: true,
     blockchain: 'EOS',
