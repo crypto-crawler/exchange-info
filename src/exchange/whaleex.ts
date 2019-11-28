@@ -3,30 +3,27 @@ import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { WhaleExPairInfo } from '../pojo/pair_info';
 
-function extractRawPair(pairInfo: WhaleExPairInfo): string {
-  return pairInfo.name;
+/* eslint-disable no-param-reassign */
+function populateCommonFields(pairInfo: WhaleExPairInfo): void {
+  pairInfo.raw_pair = pairInfo.name;
+  pairInfo.normalized_pair = `${pairInfo.baseCurrency}_${pairInfo.quoteCurrency}`;
+  pairInfo.price_precision = pairInfo.tickSize.length - 2;
+  pairInfo.quantity_precision = pairInfo.basePrecision;
+  pairInfo.min_order_volume = parseFloat(pairInfo.minNotional);
 }
-
-function extractNormalizedPair(pairInfo: WhaleExPairInfo): string {
-  return `${pairInfo.baseCurrency}_${pairInfo.quoteCurrency}`;
-}
+/* eslint-enable no-param-reassign */
 
 export async function getPairs(): Promise<WhaleExPairInfo[]> {
   const response = await axios.get('https://api.whaleex.com/BUSINESS/api/public/symbol');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
-  const arr = response.data as Array<WhaleExPairInfo>;
-
-  arr.forEach(p => {
-    /* eslint-disable no-param-reassign */
-    p.raw_pair = extractRawPair(p);
-    p.normalized_pair = extractNormalizedPair(p);
-    /* eslint-enable no-param-reassign */
-  });
-
-  return arr.filter(
+  const arr = (response.data as Array<WhaleExPairInfo>).filter(
     x => x.enable && parseFloat(x.baseVolume) > 0 && parseFloat(x.priceChangePercent) !== 0,
   );
+
+  arr.forEach(p => populateCommonFields(p));
+
+  return arr;
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {

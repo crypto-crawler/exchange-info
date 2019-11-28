@@ -30,13 +30,16 @@ export async function getGlobalConfig(): Promise<{
   return result;
 }
 
-function extractRawPair(pairInfo: NewdexPairInfo): string {
-  return pairInfo.pair_symbol;
+/* eslint-disable no-param-reassign */
+function populateCommonFields(pairInfo: NewdexPairInfo): void {
+  pairInfo.raw_pair = pairInfo.pair_symbol;
+  pairInfo.normalized_pair = `${pairInfo.base_symbol.sym.split(',')[1]}_${
+    pairInfo.quote_symbol.sym.split(',')[1]
+  }`;
+  pairInfo.quantity_precision = parseInt(pairInfo.base_symbol.sym.split(',')[0], 10);
+  pairInfo.min_order_volume = 0.01; // TODO
 }
-
-function extractNormalizedPair(pairInfo: NewdexPairInfo): string {
-  return `${pairInfo.base_symbol.sym.split(',')[1]}_${pairInfo.quote_symbol.sym.split(',')[1]}`;
-}
+/* eslint-enable no-param-reassign */
 
 export async function getPairs(): Promise<NewdexPairInfo[]> {
   const arr: NewdexPairInfo[] = [];
@@ -58,12 +61,7 @@ export async function getPairs(): Promise<NewdexPairInfo[]> {
     }
   }
 
-  arr.forEach(p => {
-    /* eslint-disable no-param-reassign */
-    p.raw_pair = extractRawPair(p);
-    p.normalized_pair = extractNormalizedPair(p);
-    /* eslint-enable no-param-reassign */
-  });
+  arr.forEach(p => populateCommonFields(p));
 
   return arr;
 }

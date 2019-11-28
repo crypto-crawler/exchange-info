@@ -15,6 +15,9 @@ export async function getPairs(): Promise<PairInfo[]> {
     return {
       raw_pair: rawPair,
       normalized_pair: rawPair.toUpperCase(),
+      price_precision: 0, // TODO
+      quantity_precision: 0,
+      min_order_volume: 0,
     };
   });
 }

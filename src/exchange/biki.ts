@@ -3,13 +3,14 @@ import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { BikiPairInfo } from '../pojo/pair_info';
 
-function extractRawPair(pairInfo: BikiPairInfo): string {
-  return pairInfo.symbol;
+/* eslint-disable no-param-reassign */
+function populateCommonFields(pairInfo: BikiPairInfo): void {
+  pairInfo.raw_pair = pairInfo.symbol;
+  pairInfo.normalized_pair = `${pairInfo.base_coin}_${pairInfo.count_coin}`;
+  pairInfo.quantity_precision = pairInfo.amount_precision;
+  pairInfo.min_order_volume = parseFloat(pairInfo.limit_volume_min);
 }
-
-function extractNormalizedPair(pairInfo: BikiPairInfo): string {
-  return `${pairInfo.base_coin}_${pairInfo.count_coin}`;
-}
+/* eslint-enable no-param-reassign */
 
 export async function getPairs(): Promise<BikiPairInfo[]> {
   const response = await axios.get('https://openapi.biki.com/open/api/common/symbols');
@@ -18,12 +19,7 @@ export async function getPairs(): Promise<BikiPairInfo[]> {
   assert.equal(response.data.msg, 'suc');
   const arr = response.data.data as Array<BikiPairInfo>;
 
-  arr.forEach(p => {
-    /* eslint-disable no-param-reassign */
-    p.raw_pair = extractRawPair(p);
-    p.normalized_pair = extractNormalizedPair(p);
-    /* eslint-enable no-param-reassign */
-  });
+  arr.forEach(p => populateCommonFields(p));
 
   return arr;
 }

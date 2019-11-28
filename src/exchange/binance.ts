@@ -3,27 +3,59 @@ import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { BinancePairInfo } from '../pojo/pair_info';
 
-function extractRawPair(pairInfo: BinancePairInfo): string {
-  return pairInfo.symbol;
+/* eslint-disable no-param-reassign */
+function populateCommonFields(pairInfo: BinancePairInfo): void {
+  pairInfo.raw_pair = pairInfo.symbol;
+  pairInfo.normalized_pair = `${pairInfo.baseAsset}_${pairInfo.quoteAsset}`;
+}
+/* eslint-enable no-param-reassign */
+
+type Info = {
+  baseAsset: string;
+  quoteAsset: string;
+  minTradeAmount: string;
+  minTickSize: string;
+  minOrderValue: string;
+  maxMarketOrderQty?: string;
+  minMarketOrderQty?: string;
+};
+
+async function getPairPrecision(rawPair: string): Promise<Info> {
+  const response = await axios.get(
+    `https://www.binance.com/gateway-api/v1/public/asset-service/product/get-exchange-info?symbol=${rawPair}`,
+  );
+  assert.equal(response.status, 200);
+  assert.ok(response.data.success);
+  return response.data.data[0] as Info;
 }
 
-function extractNormalizedPair(pairInfo: BinancePairInfo): string {
-  return `${pairInfo.baseAsset}_${pairInfo.quoteAsset}`;
+async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<void> {
+  const requests: Promise<Info>[] = [];
+  pairInfos.forEach(pairInfo => {
+    requests.push(getPairPrecision(pairInfo.raw_pair));
+  });
+  const infos = await Promise.all(requests);
+  assert.equal(infos.length, pairInfos.length);
+  for (let i = 0; i < infos.length; i += 1) {
+    const pairInfo = pairInfos[i];
+    const info = infos[i];
+    pairInfo.price_precision = info.minTickSize.length - 2;
+    pairInfo.quantity_precision = info.minTradeAmount.length - 2;
+    pairInfo.min_order_volume = parseFloat(info.minTradeAmount);
+  }
 }
 
 export async function getPairs(): Promise<BinancePairInfo[]> {
   const response = await axios.get('https://api.binance.com/api/v3/exchangeInfo');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
-  const arr = response.data.symbols as Array<BinancePairInfo>;
+  const arr = (response.data.symbols as Array<BinancePairInfo>).filter(x => x.status === 'TRADING');
 
-  arr.forEach(p => {
-    /* eslint-disable no-param-reassign */
-    p.raw_pair = extractRawPair(p);
-    p.normalized_pair = extractNormalizedPair(p);
-    /* eslint-enable no-param-reassign */
-  });
-  return arr.filter(x => x.status === 'TRADING');
+  arr.forEach(p => populateCommonFields(p));
+
+  await populatePrecisions(arr);
+
+  return arr;
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {

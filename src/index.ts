@@ -50,42 +50,48 @@ export type SupportedExchange = typeof EXCHANGES[number];
 export default async function getExchangeInfo(
   exchangeName: SupportedExchange,
 ): Promise<ExchangeInfo> {
-  switch (exchangeName) {
-    case 'Biki':
-      return Biki.getExchangeInfo();
-    case 'Binance':
-      return Binance.getExchangeInfo();
-    case 'Bitfinex':
-      return Bitfinex.getExchangeInfo();
-    case 'Bitstamp':
-      return Bitstamp.getExchangeInfo();
-    case 'Coinbase':
-      return Coinbase.getExchangeInfo();
-    case 'Coincheck':
-      return Coincheck.getExchangeInfo();
-    case 'Huobi':
-      return Huobi.getExchangeInfo();
-    case 'Kraken':
-      return Kraken.getExchangeInfo();
-    case 'MXC':
-      return MXC.getExchangeInfo();
-    case 'Newdex':
-      return Newdex.getExchangeInfo();
-    case 'OKEx_Spot':
-      return OKExSpot.getExchangeInfo();
-    case 'Poloniex':
-      return Poloniex.getExchangeInfo();
-    case 'Upbit':
-      return Upbit.getExchangeInfo();
-    case 'WhaleEx':
-      return WhaleEx.getExchangeInfo();
-    case 'Zaif':
-      return Zaif.getExchangeInfo();
-    case 'ZB':
-      return ZB.getExchangeInfo();
-    case 'bitFlyer':
-      return BitFlyer.getExchangeInfo();
-    default:
-      throw new Error(`Unknown exchange: ${exchangeName}`);
+  try {
+    switch (exchangeName) {
+      case 'Biki':
+        return Biki.getExchangeInfo();
+      case 'Binance':
+        return Binance.getExchangeInfo();
+      case 'Bitfinex':
+        return Bitfinex.getExchangeInfo();
+      case 'Bitstamp':
+        return Bitstamp.getExchangeInfo();
+      case 'Coinbase':
+        return Coinbase.getExchangeInfo();
+      case 'Coincheck':
+        return Coincheck.getExchangeInfo();
+      case 'Huobi':
+        return Huobi.getExchangeInfo();
+      case 'Kraken':
+        return Kraken.getExchangeInfo();
+      case 'MXC':
+        return MXC.getExchangeInfo();
+      case 'Newdex':
+        return Newdex.getExchangeInfo();
+      case 'OKEx_Spot':
+        return OKExSpot.getExchangeInfo();
+      case 'Poloniex':
+        return Poloniex.getExchangeInfo();
+      case 'Upbit':
+        return Upbit.getExchangeInfo();
+      case 'WhaleEx':
+        return WhaleEx.getExchangeInfo();
+      case 'Zaif':
+        return Zaif.getExchangeInfo();
+      case 'ZB':
+        return ZB.getExchangeInfo();
+      case 'bitFlyer':
+        return BitFlyer.getExchangeInfo();
+      default:
+        throw new Error(`Unknown exchange: ${exchangeName}`);
+    }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e); // TODO: remove this after official release
+    throw e;
   }
 }

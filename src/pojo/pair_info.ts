@@ -2,12 +2,14 @@
 export interface PairInfo {
   raw_pair: string;
   normalized_pair: string;
+  price_precision: number;
+  quantity_precision: number;
+  min_order_volume: number;
   [key: string]: any;
 }
 
 export interface NewdexPairInfo extends PairInfo {
   pair_id: number;
-  price_precision: number;
   status: number;
   base_symbol: {
     contract: string;
@@ -21,7 +23,7 @@ export interface NewdexPairInfo extends PairInfo {
   list_time: string;
   pair_symbol: string;
   current_price: string;
-  pair_fee: 0;
+  pair_fee: number;
 }
 
 export interface WhaleExPairInfo extends PairInfo {
@@ -34,6 +36,10 @@ export interface WhaleExPairInfo extends PairInfo {
   priceChangePercent: string;
   enable: boolean;
   baseContract: string;
+  tickSize: string;
+  lotSize: string;
+  minQty: string;
+  minNotional: string;
 }
 
 export interface BinancePairInfo extends PairInfo {
@@ -160,7 +166,6 @@ export interface BikiPairInfo extends PairInfo {
   amount_precision: number;
   base_coin: string;
   limit_volume_min: string;
-  price_precision: number;
 }
 
 export interface KrakenPairInfo extends PairInfo {
