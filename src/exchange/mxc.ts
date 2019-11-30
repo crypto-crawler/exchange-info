@@ -13,10 +13,12 @@ export async function getPairs(): Promise<PairInfo[]> {
 
   return arr.map(rawPair => {
     return {
+      exchange: 'MXC',
       raw_pair: rawPair,
       normalized_pair: rawPair.toUpperCase(),
       price_precision: 0, // TODO
-      quantity_precision: 0,
+      base_precision: 0,
+      quote_precision: 0,
       min_order_volume: 0,
     };
   });

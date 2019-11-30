@@ -22,10 +22,15 @@ export async function getPairs(): Promise<PairInfo[]> {
   return arr.map(rawInfo => {
     const rawPair = extractRawPair(rawInfo);
     const normalizedPair = extractNormalizedPair(rawInfo);
-    const pairInfo = {
+    const pairInfo: PairInfo = {
+      exchange: 'bitFlyer',
       raw_pair: rawPair,
       normalized_pair: normalizedPair,
-    } as PairInfo;
+      price_precision: 0, // TODO
+      base_precision: 0,
+      quote_precision: 0,
+      min_order_volume: 0,
+    };
     return pairInfo;
   });
 }

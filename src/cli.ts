@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 import yargs from 'yargs';
-import getExchangeInfo, { SupportedExchange, EXCHANGES } from './index';
+import { SupportedExchange, EXCHANGES } from './exchange/supported_exchange';
+import getExchangeInfo from './index';
 
 const { argv } = yargs.options({
   exchange: {

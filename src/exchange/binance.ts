@@ -5,6 +5,7 @@ import { BinancePairInfo } from '../pojo/pair_info';
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: BinancePairInfo): void {
+  pairInfo.exchange = 'Binance';
   pairInfo.raw_pair = pairInfo.symbol;
   pairInfo.normalized_pair = `${pairInfo.baseAsset}_${pairInfo.quoteAsset}`;
 }
@@ -40,7 +41,7 @@ async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<void> {
     const pairInfo = pairInfos[i];
     const info = infos[i];
     pairInfo.price_precision = info.minTickSize.length - 2;
-    pairInfo.quantity_precision = info.minTradeAmount.length - 2;
+    pairInfo.base_precision = info.minTradeAmount.length - 2;
     pairInfo.min_order_volume = parseFloat(info.minTradeAmount);
   }
 }

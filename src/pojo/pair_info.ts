@@ -1,10 +1,16 @@
 /* eslint-disable camelcase */
+import { SupportedExchange } from '../exchange/supported_exchange';
+
 export interface PairInfo {
+  exchange: SupportedExchange;
   raw_pair: string;
   normalized_pair: string;
   price_precision: number;
-  quantity_precision: number;
+  base_precision: number;
+  quote_precision: number;
   min_order_volume: number;
+  base_contract?: string; // dex only
+  quote_contract?: string; // dex only
   [key: string]: any;
 }
 

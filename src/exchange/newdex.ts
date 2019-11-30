@@ -32,12 +32,14 @@ export async function getGlobalConfig(): Promise<{
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: NewdexPairInfo): void {
+  pairInfo.exchange = 'Newdex';
   pairInfo.raw_pair = pairInfo.pair_symbol;
   pairInfo.normalized_pair = `${pairInfo.base_symbol.sym.split(',')[1]}_${
     pairInfo.quote_symbol.sym.split(',')[1]
   }`;
-  pairInfo.quantity_precision = parseInt(pairInfo.base_symbol.sym.split(',')[0], 10);
+  pairInfo.base_precision = parseInt(pairInfo.base_symbol.sym.split(',')[0], 10);
   pairInfo.min_order_volume = 0.01; // TODO
+  pairInfo.quote_precision = 4;
 }
 /* eslint-enable no-param-reassign */
 

@@ -11,15 +11,25 @@ function extractNormalizedPair(pairInfo: PairInfo): string {
   return `${rawPair.substring(0, rawPair.length - 3)}_${rawPair.substring(rawPair.length - 3)}`;
 }
 
+/* eslint-disable no-param-reassign */
+function populateCommonFields(pairInfo: PairInfo): void {
+  pairInfo.exchange = 'Bitfinex';
+  pairInfo.normalized_pair = extractNormalizedPair(pairInfo);
+  pairInfo.price_precision = 0; // TODO
+  pairInfo.base_precision = 0;
+  pairInfo.quote_precision = 0;
+  pairInfo.min_order_volume = 0;
+}
+/* eslint-enable no-param-reassign */
+
 export async function getPairs(): Promise<PairInfo[]> {
   const response = await axios.get('https://api.bitfinex.com/v1/symbols');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
   const arr = (response.data as string[]).map(x => ({ raw_pair: x } as PairInfo));
 
-  arr.forEach(p => {
-    p.normalized_pair = extractNormalizedPair(p); // eslint-disable-line no-param-reassign
-  });
+  arr.forEach(p => populateCommonFields(p));
+
   return arr;
 }
 

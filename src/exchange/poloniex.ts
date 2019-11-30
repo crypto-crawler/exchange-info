@@ -11,11 +11,16 @@ export async function getPairs(): Promise<PoloniexPairInfo[]> {
   const arr: PoloniexPairInfo[] = [];
   const myMap = response.data as { [key: string]: PoloniexPairInfo };
   Object.keys(myMap).forEach(key => {
-    const value = myMap[key];
-    value.raw_pair = key;
+    const p = myMap[key];
+    p.exchange = 'Poloniex';
+    p.raw_pair = key;
     const tmp = key.split('_');
-    value.normalized_pair = `${tmp[1]}_${tmp[0]}`;
-    arr.push(value);
+    p.normalized_pair = `${tmp[1]}_${tmp[0]}`;
+    p.price_precision = 0; // TODO
+    p.base_precision = 0;
+    p.quote_precision = 0;
+    p.min_order_volume = 0;
+    arr.push(p);
   });
 
   return arr.filter(x => x.isFrozen === '0');

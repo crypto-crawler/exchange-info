@@ -11,10 +11,15 @@ export async function getPairs(): Promise<ZBPairInfo[]> {
   const arr: ZBPairInfo[] = [];
   const myMap = response.data as { [key: string]: ZBPairInfo };
   Object.keys(myMap).forEach(key => {
-    const value = myMap[key];
-    value.raw_pair = key;
-    value.normalized_pair = key.toUpperCase();
-    arr.push(value);
+    const p = myMap[key];
+    p.exchange = 'ZB';
+    p.raw_pair = key;
+    p.normalized_pair = key.toUpperCase();
+    p.price_precision = 0; // TODO
+    p.base_precision = 0;
+    p.quote_precision = 0;
+    p.min_order_volume = 0;
+    arr.push(p);
   });
 
   return arr;

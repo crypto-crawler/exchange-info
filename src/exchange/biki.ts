@@ -5,10 +5,12 @@ import { BikiPairInfo } from '../pojo/pair_info';
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: BikiPairInfo): void {
+  pairInfo.exchange = 'Biki';
   pairInfo.raw_pair = pairInfo.symbol;
   pairInfo.normalized_pair = `${pairInfo.base_coin}_${pairInfo.count_coin}`;
-  pairInfo.quantity_precision = pairInfo.amount_precision;
+  pairInfo.base_precision = pairInfo.amount_precision;
   pairInfo.min_order_volume = parseFloat(pairInfo.limit_volume_min);
+  pairInfo.quote_precision = 0; // TODO
 }
 /* eslint-enable no-param-reassign */
 

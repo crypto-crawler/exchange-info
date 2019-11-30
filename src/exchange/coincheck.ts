@@ -22,11 +22,13 @@ export async function getPairs(): Promise<PairInfo[]> {
   });
 
   return pairs.map(p => {
-    const pairInfo = {
+    const pairInfo: PairInfo = {
+      exchange: 'Coincheck',
       raw_pair: p,
       normalized_pair: p,
       price_precision: 0, // TODO
-      quantity_precision: 0,
+      base_precision: 0,
+      quote_precision: 0,
       min_order_volume: 0,
     };
     return pairInfo;

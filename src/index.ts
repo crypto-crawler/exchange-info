@@ -16,31 +16,10 @@ import * as Upbit from './exchange/upbit';
 import * as WhaleEx from './exchange/whaleex';
 import * as Zaif from './exchange/zaif';
 import * as ZB from './exchange/zb';
+import { SupportedExchange } from './exchange/supported_exchange';
 
 export * from './pojo/pair_info';
 export { ExchangeInfo } from './pojo/exchange_info';
-
-export const EXCHANGES = [
-  'Biki',
-  'Binance',
-  'Bitfinex',
-  'Bitstamp',
-  'Coinbase',
-  'Coincheck',
-  'Huobi',
-  'Kraken',
-  'MXC',
-  'Newdex',
-  'OKEx_Spot',
-  'Poloniex',
-  'Upbit',
-  'WhaleEx',
-  'Zaif',
-  'ZB',
-  'bitFlyer',
-] as const;
-
-export type SupportedExchange = typeof EXCHANGES[number];
 
 /**
  * Get all informaton about a crypto exchange.

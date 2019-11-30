@@ -19,8 +19,13 @@ export async function getPairs(): Promise<CoinbasePairInfo[]> {
 
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
+    p.exchange = 'Coinbase';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
+    p.price_precision = 0; // TODO
+    p.base_precision = 0;
+    p.quote_precision = 0;
+    p.min_order_volume = 0;
     /* eslint-enable no-param-reassign */
   });
 

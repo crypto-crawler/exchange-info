@@ -1,7 +1,8 @@
 import { PairInfo } from './pair_info';
+import { SupportedExchange } from '../exchange/supported_exchange';
 
 export interface ExchangeInfo {
-  name: string;
+  name: SupportedExchange;
   api_doc: string;
   websocket_endpoint: string;
   restful_endpoint: string;
