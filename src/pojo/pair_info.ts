@@ -14,6 +14,15 @@ export interface PairInfo {
   [key: string]: any;
 }
 
+// eslint-disable-next-line import/prefer-default-export
+export function convertArrayToMap(arr: PairInfo[]): { [key: string]: PairInfo } {
+  const map: { [key: string]: PairInfo } = {};
+  arr.forEach(p => {
+    map[p.normalized_pair] = p;
+  });
+  return map;
+}
+
 export interface NewdexPairInfo extends PairInfo {
   pair_id: number;
   status: number;

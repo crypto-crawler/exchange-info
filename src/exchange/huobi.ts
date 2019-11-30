@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { HuobiPairInfo } from '../pojo/pair_info';
+import { PairInfo, HuobiPairInfo, convertArrayToMap } from '../pojo/pair_info';
 
 function extractRawPair(pairInfo: HuobiPairInfo): string {
   return pairInfo.symbol;
@@ -11,12 +11,12 @@ function extractNormalizedPair(pairInfo: HuobiPairInfo): string {
   return `${pairInfo['base-currency']}_${pairInfo['quote-currency']}`.toUpperCase();
 }
 
-export async function getPairs(): Promise<HuobiPairInfo[]> {
+export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://api.huobi.pro/v1/common/symbols');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
   assert.equal(response.data.status, 'ok');
-  const arr = response.data.data as Array<HuobiPairInfo>;
+  const arr = (response.data.data as Array<HuobiPairInfo>).filter(x => x.state === 'online');
 
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
@@ -30,11 +30,11 @@ export async function getPairs(): Promise<HuobiPairInfo[]> {
     /* eslint-enable no-param-reassign */
   });
 
-  return arr.filter(x => x.state === 'online');
+  return convertArrayToMap(arr);
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
-  const info = {
+  const info: ExchangeInfo = {
     name: 'Huobi',
     api_doc: 'https://huobiapi.github.io/docs/spot/v1/en/',
     websocket_endpoint: 'wss://api.huobi.pro/ws',
@@ -43,8 +43,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     status: true,
     maker_fee: 0.002, // see https://www.hbg.com/en-us/fee/
     taker_fee: 0.002,
-    pairs: [],
-  } as ExchangeInfo;
+    pairs: {},
+  };
 
   info.pairs = await getPairs();
   return info;

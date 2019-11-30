@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo } from '../pojo/pair_info';
+import { PairInfo, convertArrayToMap } from '../pojo/pair_info';
 
 function extractNormalizedPair(pairInfo: PairInfo): string {
   const rawPair = pairInfo.raw_pair.toUpperCase();
@@ -22,7 +22,7 @@ function populateCommonFields(pairInfo: PairInfo): void {
 }
 /* eslint-enable no-param-reassign */
 
-export async function getPairs(): Promise<PairInfo[]> {
+export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://api.bitfinex.com/v1/symbols');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -30,11 +30,11 @@ export async function getPairs(): Promise<PairInfo[]> {
 
   arr.forEach(p => populateCommonFields(p));
 
-  return arr;
+  return convertArrayToMap(arr);
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
-  const info = {
+  const info: ExchangeInfo = {
     name: 'Bitfinex',
     api_doc: 'https://docs.bitfinex.com/docs',
     websocket_endpoint: 'wss://api-pub.bitfinex.com/ws/2',
@@ -43,8 +43,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     status: true,
     maker_fee: 0.001, // see https://www.bitfinex.com/fees
     taker_fee: 0.002,
-    pairs: [],
-  } as ExchangeInfo;
+    pairs: {},
+  };
 
   info.pairs = await getPairs();
   return info;

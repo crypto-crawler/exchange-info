@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { WhaleExPairInfo } from '../pojo/pair_info';
+import { PairInfo, WhaleExPairInfo, convertArrayToMap } from '../pojo/pair_info';
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: WhaleExPairInfo): void {
@@ -44,7 +44,7 @@ async function populateQuoteContract(pairInfos: WhaleExPairInfo[]): Promise<void
 }
 /* eslint-enable no-param-reassign */
 
-export async function getPairs(): Promise<WhaleExPairInfo[]> {
+export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://api.whaleex.com/BUSINESS/api/public/symbol');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -56,11 +56,11 @@ export async function getPairs(): Promise<WhaleExPairInfo[]> {
 
   await populateQuoteContract(arr);
 
-  return arr;
+  return convertArrayToMap(arr);
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
-  const info = {
+  const info: ExchangeInfo = {
     name: 'WhaleEx',
     api_doc: 'https://github.com/WhaleEx/API',
     websocket_endpoint: 'wss://www.whaleex.com/ws/websocket',
@@ -70,8 +70,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     status: true,
     maker_fee: 0.001, // see https://whaleex.zendesk.com/hc/zh-cn/articles/360015324891-%E4%BA%A4%E6%98%93%E6%89%8B%E7%BB%AD%E8%B4%B9
     taker_fee: 0.001,
-    pairs: [],
-  } as ExchangeInfo;
+    pairs: {},
+  };
 
   info.pairs = await getPairs();
   return info;

@@ -11,5 +11,5 @@ export interface ExchangeInfo {
   status: boolean; // true, running; false, in maintenance.
   maker_fee: number;
   taker_fee: number;
-  pairs: PairInfo[];
+  pairs: { [key: string]: PairInfo };
 }

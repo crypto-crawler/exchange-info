@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { BikiPairInfo } from '../pojo/pair_info';
+import { PairInfo, BikiPairInfo, convertArrayToMap } from '../pojo/pair_info';
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: BikiPairInfo): void {
@@ -14,20 +14,20 @@ function populateCommonFields(pairInfo: BikiPairInfo): void {
 }
 /* eslint-enable no-param-reassign */
 
-export async function getPairs(): Promise<BikiPairInfo[]> {
+export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://openapi.biki.com/open/api/common/symbols');
   assert.equal(response.status, 200);
   assert.equal(response.data.code, '0');
   assert.equal(response.data.msg, 'suc');
-  const arr = response.data.data as Array<BikiPairInfo>;
+  const arr = response.data.data as BikiPairInfo[];
 
   arr.forEach(p => populateCommonFields(p));
 
-  return arr;
+  return convertArrayToMap(arr);
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
-  const info = {
+  const info: ExchangeInfo = {
     name: 'Biki',
     api_doc: 'https://github.com/code-biki/open-api',
     websocket_endpoint: 'wss://ws.biki.com/kline-api/ws',
@@ -36,8 +36,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     status: true,
     maker_fee: 0.0015, // see https://bikiuser.zendesk.com/hc/en-us/articles/360016487751-Announcement-on-canceling-the-free-trading-fee-for-four-trading-pairs
     taker_fee: 0.0015,
-    pairs: [],
-  } as ExchangeInfo;
+    pairs: {},
+  };
 
   info.pairs = await getPairs();
   return info;

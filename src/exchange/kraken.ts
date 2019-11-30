@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { KrakenPairInfo } from '../pojo/pair_info';
+import { PairInfo, KrakenPairInfo, convertArrayToMap } from '../pojo/pair_info';
 
 function extractRawPair(pairInfo: KrakenPairInfo): string {
   return pairInfo.wsname;
@@ -11,7 +11,7 @@ function extractNormalizedPair(pairInfo: KrakenPairInfo): string {
   return pairInfo.wsname.replace('/', '_');
 }
 
-export async function getPairs(): Promise<KrakenPairInfo[]> {
+export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://api.kraken.com/0/public/AssetPairs');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -32,11 +32,11 @@ export async function getPairs(): Promise<KrakenPairInfo[]> {
       /* eslint-enable no-param-reassign */
     });
 
-  return arr;
+  return convertArrayToMap(arr);
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
-  const info = {
+  const info: ExchangeInfo = {
     name: 'Kraken',
     api_doc: 'https://docs.kraken.com/websockets/',
     websocket_endpoint: 'ws.kraken.com',
@@ -46,8 +46,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     status: true,
     maker_fee: 0.0016, // see https://support.kraken.com/hc/en-us/articles/360000526126-What-are-Maker-and-Taker-fees-
     taker_fee: 0.0026,
-    pairs: [],
-  } as ExchangeInfo;
+    pairs: {},
+  };
 
   info.pairs = await getPairs();
   return info;

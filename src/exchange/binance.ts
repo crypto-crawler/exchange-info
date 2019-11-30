@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { BinancePairInfo } from '../pojo/pair_info';
+import { PairInfo, BinancePairInfo, convertArrayToMap } from '../pojo/pair_info';
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: BinancePairInfo): void {
@@ -46,7 +46,7 @@ async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<void> {
   }
 }
 
-export async function getPairs(): Promise<BinancePairInfo[]> {
+export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://api.binance.com/api/v3/exchangeInfo');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -56,11 +56,11 @@ export async function getPairs(): Promise<BinancePairInfo[]> {
 
   await populatePrecisions(arr);
 
-  return arr;
+  return convertArrayToMap(arr);
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
-  const info = {
+  const info: ExchangeInfo = {
     name: 'Binance',
     api_doc: 'https://github.com/binance-exchange/binance-official-api-docs',
     websocket_endpoint: 'wss://stream.binance.com:9443',
@@ -69,8 +69,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     status: true,
     maker_fee: 0.001, // see https://www.binance.com/en/fee/schedule
     taker_fee: 0.001,
-    pairs: [],
-  } as ExchangeInfo;
+    pairs: {},
+  };
 
   info.pairs = await getPairs();
   return info;

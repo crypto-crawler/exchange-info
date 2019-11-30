@@ -3,12 +3,12 @@ import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PoloniexPairInfo } from '../pojo/pair_info';
 
-export async function getPairs(): Promise<PoloniexPairInfo[]> {
+export async function getPairs(): Promise<{ [key: string]: PoloniexPairInfo }> {
   const response = await axios.get('https://poloniex.com/public?command=returnTicker');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
 
-  const arr: PoloniexPairInfo[] = [];
+  const result: { [key: string]: PoloniexPairInfo } = {};
   const myMap = response.data as { [key: string]: PoloniexPairInfo };
   Object.keys(myMap).forEach(key => {
     const p = myMap[key];
@@ -20,14 +20,16 @@ export async function getPairs(): Promise<PoloniexPairInfo[]> {
     p.base_precision = 0;
     p.quote_precision = 0;
     p.min_order_volume = 0;
-    arr.push(p);
+    if (p.isFrozen === '0') {
+      result[p.normalized_pair] = p;
+    }
   });
 
-  return arr.filter(x => x.isFrozen === '0');
+  return result;
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
-  const info = {
+  const info: ExchangeInfo = {
     name: 'Poloniex',
     api_doc: 'https://docs.poloniex.com/',
     websocket_endpoint: 'wss://api2.poloniex.com',
@@ -36,8 +38,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     status: true,
     maker_fee: 0.0015, // see https://poloniex.com/fees/
     taker_fee: 0.0025,
-    pairs: [],
-  } as ExchangeInfo;
+    pairs: {},
+  };
 
   info.pairs = await getPairs();
   return info;

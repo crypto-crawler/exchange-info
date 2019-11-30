@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { NewdexPairInfo } from '../pojo/pair_info';
+import { PairInfo, NewdexPairInfo, convertArrayToMap } from '../pojo/pair_info';
 import getTableRows from '../blockchain/eos';
 
 export async function getGlobalConfig(): Promise<{
@@ -43,7 +43,7 @@ function populateCommonFields(pairInfo: NewdexPairInfo): void {
 }
 /* eslint-enable no-param-reassign */
 
-export async function getPairs(): Promise<NewdexPairInfo[]> {
+export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   const arr: NewdexPairInfo[] = [];
   let more = true;
   let lowerBound = 1;
@@ -65,11 +65,11 @@ export async function getPairs(): Promise<NewdexPairInfo[]> {
 
   arr.forEach(p => populateCommonFields(p));
 
-  return arr;
+  return convertArrayToMap(arr);
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
-  const info = {
+  const info: ExchangeInfo = {
     name: 'Newdex',
     api_doc: 'https://github.com/newdex/api-docs',
     websocket_endpoint: 'wss://ws.newdex.io',
@@ -79,8 +79,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     status: true,
     maker_fee: 0.002,
     taker_fee: 0.002,
-    pairs: [],
-  } as ExchangeInfo;
+    pairs: {},
+  };
 
   const globalConfig = await getGlobalConfig();
   info.status = globalConfig.status;

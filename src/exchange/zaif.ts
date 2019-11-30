@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { ZaifPairInfo } from '../pojo/pair_info';
+import { PairInfo, ZaifPairInfo, convertArrayToMap } from '../pojo/pair_info';
 
 function extractRawPair(pairInfo: ZaifPairInfo): string {
   return pairInfo.currency_pair;
@@ -13,7 +13,7 @@ function extractNormalizedPair(pairInfo: ZaifPairInfo): string {
   return pairInfo.currency_pair.toUpperCase();
 }
 
-export async function getPairs(): Promise<ZaifPairInfo[]> {
+export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://api.zaif.jp/api/1/currency_pairs/all');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -31,11 +31,11 @@ export async function getPairs(): Promise<ZaifPairInfo[]> {
     /* eslint-enable no-param-reassign */
   });
 
-  return arr;
+  return convertArrayToMap(arr);
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
-  const info = {
+  const info: ExchangeInfo = {
     name: 'Zaif',
     api_doc: 'https://zaif-api-document.readthedocs.io/ja/latest/index.html',
     websocket_endpoint: 'wss://ws.zaif.jp/stream?currency_pair=',
@@ -44,8 +44,8 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     status: true,
     maker_fee: 0.0, // see https://zaif.jp/fee?lang=en
     taker_fee: 0.0,
-    pairs: [],
-  } as ExchangeInfo;
+    pairs: {},
+  };
 
   info.pairs = await getPairs();
   return info;
