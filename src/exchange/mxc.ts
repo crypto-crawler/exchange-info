@@ -1,28 +1,30 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { PairInfo } from '../pojo/pair_info';
 
 export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
-  const response = await axios.get('https://www.mxc.com/open/api/v1/data/markets');
+  const response = await axios.get('https://www.mxc.com/open/api/v1/data/markets_info');
   assert.equal(response.status, 200);
-  assert.equal(response.statusText, 'OK');
   assert.equal(response.data.code, 200);
-  assert.equal(response.data.msg, 'OK');
-  const arr = response.data.data as string[];
+  const map = response.data.data as { [key: string]: PairInfo };
 
-  const arr2: PairInfo[] = arr.map(rawPair => {
-    return {
-      exchange: 'MXC',
-      raw_pair: rawPair,
-      normalized_pair: rawPair.toUpperCase(),
-      price_precision: 0, // TODO
-      base_precision: 0,
-      quote_precision: 0,
-      min_order_volume: 0,
-    };
+  Object.keys(map).forEach(key => {
+    const pairInfo = map[key];
+    pairInfo.exchange = 'MXC';
+    pairInfo.raw_pair = key;
+    pairInfo.normalized_pair = key;
+    pairInfo.price_precision = pairInfo.priceScale;
+    pairInfo.base_precision = pairInfo.quantityScale;
+    pairInfo.quote_precision = 0; // TODO
+    pairInfo.min_order_volume = pairInfo.minAmount;
+
+    // delete pairInfo.priceScale;
+    // delete pairInfo.quantityScale;
+    // delete pairInfo.minAmount;
   });
-  return convertArrayToMap(arr2);
+
+  return map;
 }
 
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
@@ -30,7 +32,7 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     name: 'MXC',
     api_doc: 'https://github.com/mxcdevelop/APIDoc',
     websocket_endpoint: 'wss://wbs.mxc.com/socket.io/',
-    restful_endpoint: 'https://www.mxc.com/api/market',
+    restful_endpoint: 'https://www.mxc.com',
     is_dex: false,
     status: true,
     maker_fee: 0.002, // see https://www.mxc.com/intro/fees
