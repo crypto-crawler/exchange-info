@@ -20,6 +20,7 @@ import { SupportedExchange } from './exchange/supported_exchange';
 
 export * from './pojo/pair_info';
 export { ExchangeInfo } from './pojo/exchange_info';
+export { SupportedExchange } from './exchange/supported_exchange';
 
 /**
  * Get all informaton about a crypto exchange.
