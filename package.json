@@ -1,6 +1,6 @@
 {
   "name": "exchange-info",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Get everything you need to know about a crypto exchange.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -23,7 +23,7 @@ export async function getGlobalConfig(): Promise<{
   }>;
 
   const result = {
-    status: arr[1].value === '1',
+    status: arr[1].value === '1', // 交易所运行状态(1-正常，0-维护)
     taker_fee: parseInt(arr[2].value, 10) / 10000,
     maker_fee: parseInt(arr[3].value, 10) / 10000,
   };
@@ -55,7 +55,7 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
       table: 'exchangepair',
       lower_bound: lowerBound,
     });
-    const pairs = result.rows as NewdexPairInfo[];
+    const pairs = (result.rows as NewdexPairInfo[]).filter(x => x.status === 0);
     arr.push(...pairs);
     more = result.more;
     if (pairs.length > 0) {
