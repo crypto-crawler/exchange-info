@@ -1,6 +1,6 @@
 {
   "name": "exchange-info",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Get everything you need to know about a crypto exchange.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,6 +11,7 @@
     "start": "node ./dist/cli.js",
     "lint": "eslint . --ext '.js,.jsx,.ts,.tsx,.md'",
     "prettier": "prettier -c --write '**/*'",
+    "prepublish": "npm run lint && npm run prettier && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

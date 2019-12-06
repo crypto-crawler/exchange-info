@@ -49,7 +49,7 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
   const arr = (response.data as Array<WhaleExPairInfo>).filter(
-    x => x.enable && parseFloat(x.baseVolume) > 0 && parseFloat(x.priceChangePercent) !== 0,
+    x => x.enable && parseFloat(x.baseVolume) > 0 && parseFloat(x.quoteVolume) > 0,
   );
 
   arr.forEach(p => populateCommonFields(p));
