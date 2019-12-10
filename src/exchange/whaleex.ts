@@ -48,9 +48,7 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://api.whaleex.com/BUSINESS/api/public/symbol');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
-  const arr = (response.data as Array<WhaleExPairInfo>).filter(
-    x => x.enable && parseFloat(x.baseVolume) > 0 && parseFloat(x.quoteVolume) > 0,
-  );
+  const arr = (response.data as Array<WhaleExPairInfo>).filter(x => x.enable);
 
   arr.forEach(p => populateCommonFields(p));
 
