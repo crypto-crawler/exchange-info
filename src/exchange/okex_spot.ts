@@ -36,8 +36,8 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
 export async function getExchangeInfo(): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'OKEx_Spot',
-    api_doc: 'https://github.com/okcoin-okex/API-docs-OKEx.com',
-    websocket_endpoint: 'wss://real.okex.com:10441/websocket?compress=true',
+    api_doc: 'https://www.okex.com/docs/en/',
+    websocket_endpoint: 'wss://real.okex.com:8443/ws/v3',
     restful_endpoint: 'https://www.okex.com/api/v2/spot',
     is_dex: false,
     status: true,
