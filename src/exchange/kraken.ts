@@ -45,7 +45,7 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'Kraken',
     api_doc: 'https://docs.kraken.com/websockets/',
-    websocket_endpoint: 'ws.kraken.com',
+    websocket_endpoint: 'wss://ws.kraken.com',
     restful_endpoint: 'https://api.kraken.com',
     is_dex: true,
     blockchain: 'EOS',
