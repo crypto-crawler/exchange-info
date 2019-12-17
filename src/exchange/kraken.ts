@@ -8,7 +8,13 @@ function extractRawPair(pairInfo: KrakenPairInfo): string {
 }
 
 function extractNormalizedPair(pairInfo: KrakenPairInfo): string {
-  return pairInfo.wsname.replace('/', '_');
+  const arr = pairInfo.wsname.split('/');
+  assert.equal(arr.length, 2);
+  for (let i = 0; i < arr.length; i += 1) {
+    if (arr[i] === 'XBT') arr[i] = 'BTC';
+    if (arr[i] === 'XDG') arr[i] = 'DOGE';
+  }
+  return `${arr[0]}_${arr[1]}`;
 }
 
 export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
