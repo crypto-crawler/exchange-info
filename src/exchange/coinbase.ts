@@ -40,7 +40,7 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     restful_endpoint: 'https://api.pro.coinbase.com',
     is_dex: false,
     status: true,
-    maker_fee: 0.005, // see https://pro.coinbase.com/fees
+    maker_fee: 0.005, // see https://pro.coinbase.com/fees, https://pro.coinbase.com/orders/fees
     taker_fee: 0.005,
     pairs: {},
   };

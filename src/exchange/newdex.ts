@@ -40,6 +40,8 @@ function populateCommonFields(pairInfo: NewdexPairInfo): void {
   pairInfo.base_precision = parseInt(pairInfo.base_symbol.sym.split(',')[0], 10);
   pairInfo.min_order_volume = 0.01; // TODO
   pairInfo.quote_precision = 4;
+  pairInfo.base_contract = pairInfo.base_symbol.contract;
+  pairInfo.quote_contract = pairInfo.quote_symbol.contract;
 }
 /* eslint-enable no-param-reassign */
 
