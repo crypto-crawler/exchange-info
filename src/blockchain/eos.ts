@@ -3,23 +3,21 @@ import { JsonRpc } from 'eosjs';
 const fetch = require('node-fetch'); // node only; not needed in browsers
 
 const EOS_API_ENDPOINTS = [
-  'http://eos.infstones.io',
-  'https://eos.infstones.io',
-  'http://eos.eoscafeblock.com',
-  'https://eos.eoscafeblock.com',
-  'https://node.betdice.one',
-  'http://api.main.alohaeos.com',
   'http://api-mainnet.starteos.io',
-  'https://bp.whaleex.com',
-  'https://api.zbeos.com',
-  'https://node1.zbeos.com',
-  'https://api.main.alohaeos.com',
-  'https://api.eoslaomao.com',
-  'https://api-mainnet.starteos.io',
-  'http://peer2.eoshuobipool.com:8181',
+  'http://api.main.alohaeos.com',
+  'http://eos.eoscafeblock.com',
+  'http://eos.infstones.io',
   'http://peer1.eoshuobipool.com:8181',
+  'http://peer2.eoshuobipool.com:8181',
+  'https://api-mainnet.starteos.io',
+  'https://api.main.alohaeos.com',
   'https://api.redpacketeos.com',
-  'https://mainnet.eoscannon.io',
+  'https://api.zbeos.com',
+  'https://bp.whaleex.com',
+  'https://eos.eoscafeblock.com',
+  'https://eos.infstones.io',
+  'https://node.betdice.one',
+  'https://node1.zbeos.com',
 ];
 
 function getRandomRpc() {
