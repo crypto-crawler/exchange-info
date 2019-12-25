@@ -23,10 +23,10 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
     p.exchange = 'Huobi';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
-    p.price_precision = 0; // TODO
-    p.base_precision = 0;
-    p.quote_precision = 0;
-    p.min_order_volume = 0;
+    p.price_precision = p['price-precision'];
+    p.base_precision = p['amount-precision'];
+    p.quote_precision = p['value-precision'];
+    p.min_order_volume = p['min-order-value'];
     /* eslint-enable no-param-reassign */
   });
 
@@ -38,7 +38,7 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     name: 'Huobi',
     api_doc: 'https://huobiapi.github.io/docs/spot/v1/en/',
     websocket_endpoint: 'wss://api.huobi.pro/ws',
-    restful_endpoint: 'https://api.huobi.pro/v1',
+    restful_endpoint: 'https://api.huobi.pro',
     is_dex: false,
     status: true,
     maker_fee: 0.002, // see https://www.hbg.com/en-us/fee/
