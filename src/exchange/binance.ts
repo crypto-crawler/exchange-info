@@ -3,11 +3,26 @@ import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PairInfo, BinancePairInfo, convertArrayToMap } from '../pojo/pair_info';
 
+function calcPrecision(numberStr: string): number {
+  return -Math.log10(parseFloat(numberStr));
+}
+
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: BinancePairInfo): void {
   pairInfo.exchange = 'Binance';
   pairInfo.raw_pair = pairInfo.symbol;
   pairInfo.normalized_pair = `${pairInfo.baseAsset}_${pairInfo.quoteAsset}`;
+
+  pairInfo.price_precision = calcPrecision(
+    pairInfo.filters.filter(x => x.filterType === 'PRICE_FILTER')[0].tickSize,
+  );
+  pairInfo.base_precision = calcPrecision(
+    pairInfo.filters.filter(x => x.filterType === 'LOT_SIZE')[0].stepSize,
+  );
+  pairInfo.quote_precision = pairInfo.quotePrecision;
+  pairInfo.min_order_volume = parseFloat(
+    pairInfo.filters.filter(x => x.filterType === 'MIN_NOTIONAL')[0].minNotional,
+  );
 }
 /* eslint-enable no-param-reassign */
 
@@ -40,9 +55,9 @@ async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<void> {
   for (let i = 0; i < infos.length; i += 1) {
     const pairInfo = pairInfos[i];
     const info = infos[i];
-    pairInfo.price_precision = info.minTickSize.length - 2;
-    pairInfo.base_precision = info.minTradeAmount.length - 2;
-    pairInfo.min_order_volume = parseFloat(info.minTradeAmount);
+    assert.equal(pairInfo.price_precision, calcPrecision(info.minTickSize));
+    assert.equal(pairInfo.base_precision, calcPrecision(info.minTradeAmount));
+    assert.equal(pairInfo.min_order_volume, parseFloat(info.minOrderValue));
   }
 }
 

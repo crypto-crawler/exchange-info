@@ -61,7 +61,10 @@ export interface BinancePairInfo extends PairInfo {
   symbol: string;
   status: string;
   baseAsset: string;
+  baseAssetPrecision: number;
   quoteAsset: string;
+  quotePrecision: number;
+  filters: Array<{ filterType: string; [key: string]: any }>;
 }
 
 export interface BitstampPairInfo extends PairInfo {
