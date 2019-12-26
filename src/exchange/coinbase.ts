@@ -26,7 +26,8 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
     p.price_precision = calcPrecision(p.quote_increment);
     p.base_precision = calcPrecision(p.base_increment);
     p.quote_precision = calcPrecision(p.quote_increment);
-    p.min_order_volume = parseFloat(p.min_market_funds);
+    p.min_quote_quantity = parseFloat(p.min_market_funds);
+    p.min_base_quantity = parseFloat(p.base_min_size);
     /* eslint-enable no-param-reassign */
   });
 

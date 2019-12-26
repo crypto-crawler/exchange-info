@@ -17,8 +17,11 @@ function populateCommonFields(pairInfo: BinancePairInfo): void {
     pairInfo.filters.filter(x => x.filterType === 'LOT_SIZE')[0].stepSize,
   );
   pairInfo.quote_precision = pairInfo.quotePrecision;
-  pairInfo.min_order_volume = parseFloat(
+  pairInfo.min_quote_quantity = parseFloat(
     pairInfo.filters.filter(x => x.filterType === 'MIN_NOTIONAL')[0].minNotional,
+  );
+  pairInfo.min_base_quantity = parseFloat(
+    pairInfo.filters.filter(x => x.filterType === 'LOT_SIZE')[0].minQty,
   );
 }
 /* eslint-enable no-param-reassign */
@@ -54,7 +57,7 @@ async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<void> {
     const info = infos[i];
     assert.equal(pairInfo.price_precision, calcPrecision(info.minTickSize));
     assert.equal(pairInfo.base_precision, calcPrecision(info.minTradeAmount));
-    assert.equal(pairInfo.min_order_volume, parseFloat(info.minOrderValue));
+    assert.equal(pairInfo.min_quote_quantity, parseFloat(info.minOrderValue));
   }
 }
 

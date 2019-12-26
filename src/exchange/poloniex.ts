@@ -19,7 +19,7 @@ export async function getPairs(): Promise<{ [key: string]: PoloniexPairInfo }> {
     p.price_precision = 0; // TODO
     p.base_precision = 0;
     p.quote_precision = 0;
-    p.min_order_volume = 0;
+    p.min_quote_quantity = 0;
     if (p.isFrozen === '0') {
       result[p.normalized_pair] = p;
     }

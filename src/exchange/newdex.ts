@@ -38,8 +38,8 @@ function populateCommonFields(pairInfo: NewdexPairInfo): void {
     pairInfo.quote_symbol.sym.split(',')[1]
   }`;
   pairInfo.base_precision = parseInt(pairInfo.base_symbol.sym.split(',')[0], 10);
-  pairInfo.min_order_volume = 0.01; // TODO
-  pairInfo.quote_precision = 4;
+  pairInfo.min_quote_quantity = 0.01; // TODO
+  pairInfo.quote_precision = parseInt(pairInfo.quote_symbol.sym.split(',')[0], 10); // 4
   pairInfo.base_contract = pairInfo.base_symbol.contract;
   pairInfo.quote_contract = pairInfo.quote_symbol.contract;
 }

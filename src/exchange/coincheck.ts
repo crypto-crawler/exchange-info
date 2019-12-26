@@ -29,7 +29,7 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
       price_precision: 0, // TODO
       base_precision: 0,
       quote_precision: 0,
-      min_order_volume: 0,
+      min_quote_quantity: 0,
     };
     return pairInfo;
   });

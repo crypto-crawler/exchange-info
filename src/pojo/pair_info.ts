@@ -8,7 +8,8 @@ export interface PairInfo {
   price_precision: number;
   base_precision: number;
   quote_precision: number;
-  min_order_volume: number;
+  min_quote_quantity: number;
+  min_base_quantity?: number;
   base_contract?: string; // dex only
   quote_contract?: string; // dex only
   [key: string]: any;
@@ -47,9 +48,11 @@ export interface WhaleExPairInfo extends PairInfo {
   basePrecision: number;
   quoteCurrency: string;
   quotePrecision: number;
+  precision: number;
   baseVolume: string;
   priceChangePercent: string;
   enable: boolean;
+  status: 'ON' | 'OFF';
   baseContract: string;
   tickSize: string;
   lotSize: string;

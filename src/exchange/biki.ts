@@ -9,7 +9,7 @@ function populateCommonFields(pairInfo: BikiPairInfo): void {
   pairInfo.raw_pair = pairInfo.symbol;
   pairInfo.normalized_pair = `${pairInfo.base_coin}_${pairInfo.count_coin}`;
   pairInfo.base_precision = pairInfo.amount_precision;
-  pairInfo.min_order_volume = parseFloat(pairInfo.limit_volume_min);
+  pairInfo.min_quote_quantity = parseFloat(pairInfo.limit_volume_min);
   pairInfo.quote_precision = 0; // TODO
 }
 /* eslint-enable no-param-reassign */

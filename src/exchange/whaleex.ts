@@ -2,16 +2,18 @@ import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PairInfo, WhaleExPairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { calcPrecision } from '../utils';
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: WhaleExPairInfo): void {
   pairInfo.exchange = 'WhaleEx';
   pairInfo.raw_pair = pairInfo.name;
   pairInfo.normalized_pair = `${pairInfo.baseCurrency}_${pairInfo.quoteCurrency}`;
-  pairInfo.price_precision = pairInfo.tickSize.length - 2;
-  pairInfo.base_precision = pairInfo.basePrecision;
+  pairInfo.price_precision = calcPrecision(pairInfo.tickSize);
+  pairInfo.base_precision = pairInfo.precision; // basePrecision
   pairInfo.quote_precision = pairInfo.quotePrecision;
-  pairInfo.min_order_volume = parseFloat(pairInfo.minNotional);
+  pairInfo.min_quote_quantity = parseFloat(pairInfo.minNotional);
+  pairInfo.min_base_quantity = parseFloat(pairInfo.minQty);
   pairInfo.base_contract = pairInfo.baseContract;
 }
 

@@ -18,7 +18,7 @@ function populateCommonFields(pairInfo: PairInfo): void {
   pairInfo.price_precision = 0; // TODO
   pairInfo.base_precision = 0;
   pairInfo.quote_precision = 0;
-  pairInfo.min_order_volume = 0;
+  pairInfo.min_quote_quantity = 0;
 }
 /* eslint-enable no-param-reassign */
 

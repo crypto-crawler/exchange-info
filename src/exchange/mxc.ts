@@ -16,12 +16,8 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
     pairInfo.normalized_pair = key;
     pairInfo.price_precision = pairInfo.priceScale;
     pairInfo.base_precision = pairInfo.quantityScale;
-    pairInfo.quote_precision = 0; // TODO
-    pairInfo.min_order_volume = pairInfo.minAmount;
-
-    // delete pairInfo.priceScale;
-    // delete pairInfo.quantityScale;
-    // delete pairInfo.minAmount;
+    pairInfo.quote_precision = pairInfo.priceScale;
+    pairInfo.min_quote_quantity = pairInfo.minAmount;
   });
 
   return map;

@@ -25,7 +25,7 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
     p.price_precision = 0; // TODO
     p.base_precision = 0;
     p.quote_precision = 0;
-    p.min_order_volume = 0;
+    p.min_quote_quantity = 0;
     /* eslint-enable no-param-reassign */
   });
 
