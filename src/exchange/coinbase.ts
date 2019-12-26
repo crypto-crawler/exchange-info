@@ -2,6 +2,7 @@ import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PairInfo, CoinbasePairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { calcPrecision } from '../utils';
 
 function extractRawPair(pairInfo: CoinbasePairInfo): string {
   return pairInfo.display_name;
@@ -22,10 +23,10 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
     p.exchange = 'Coinbase';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
-    p.price_precision = 0; // TODO
-    p.base_precision = 0;
-    p.quote_precision = 0;
-    p.min_order_volume = 0;
+    p.price_precision = calcPrecision(p.quote_increment);
+    p.base_precision = calcPrecision(p.base_increment);
+    p.quote_precision = calcPrecision(p.quote_increment);
+    p.min_order_volume = parseFloat(p.min_market_funds);
     /* eslint-enable no-param-reassign */
   });
 

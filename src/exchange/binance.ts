@@ -2,10 +2,7 @@ import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PairInfo, BinancePairInfo, convertArrayToMap } from '../pojo/pair_info';
-
-function calcPrecision(numberStr: string): number {
-  return -Math.log10(parseFloat(numberStr));
-}
+import { calcPrecision } from '../utils';
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: BinancePairInfo): void {
