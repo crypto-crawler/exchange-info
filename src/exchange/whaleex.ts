@@ -10,7 +10,7 @@ function populateCommonFields(pairInfo: WhaleExPairInfo): void {
   pairInfo.raw_pair = pairInfo.name;
   pairInfo.normalized_pair = `${pairInfo.baseCurrency}_${pairInfo.quoteCurrency}`;
   pairInfo.price_precision = calcPrecision(pairInfo.tickSize);
-  pairInfo.base_precision = pairInfo.precision; // basePrecision
+  pairInfo.base_precision = pairInfo.basePrecision;
   pairInfo.quote_precision = pairInfo.quotePrecision;
   pairInfo.min_quote_quantity = parseFloat(pairInfo.minNotional);
   pairInfo.min_base_quantity = parseFloat(pairInfo.minQty);
