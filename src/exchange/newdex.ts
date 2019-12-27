@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
+import { getTableRows } from 'eos-utils';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PairInfo, NewdexPairInfo, convertArrayToMap } from '../pojo/pair_info';
-import getTableRows from '../blockchain/eos';
 
 export async function getGlobalConfig(): Promise<{
   status: boolean;
