@@ -45,7 +45,8 @@ async function getPairPrecision(rawPair: string): Promise<Info> {
   return response.data.data[0] as Info;
 }
 
-async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<void> {
+// for debug only
+export async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<void> {
   const requests: Promise<Info>[] = [];
   pairInfos.forEach(pairInfo => {
     requests.push(getPairPrecision(pairInfo.raw_pair));
@@ -69,7 +70,7 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
 
   arr.forEach(p => populateCommonFields(p));
 
-  await populatePrecisions(arr);
+  // await populatePrecisions(arr);
 
   return convertArrayToMap(arr);
 }
