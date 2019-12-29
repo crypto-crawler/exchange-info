@@ -23,20 +23,18 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   assert.equal(response.statusText, 'OK');
   assert.equal(response.data.error.length, 0);
 
-  const arr = Object.values(response.data.result) as Array<KrakenPairInfo>;
-  arr
-    .filter(x => x.wsname)
-    .forEach(p => {
-      /* eslint-disable no-param-reassign */
-      p.exchange = 'Kraken';
-      p.raw_pair = extractRawPair(p);
-      p.normalized_pair = extractNormalizedPair(p);
-      p.price_precision = 0; // TODO
-      p.base_precision = 0;
-      p.quote_precision = 0;
-      p.min_quote_quantity = 0;
-      /* eslint-enable no-param-reassign */
-    });
+  const arr = (Object.values(response.data.result) as Array<KrakenPairInfo>).filter(x => x.wsname);
+  arr.forEach(p => {
+    /* eslint-disable no-param-reassign */
+    p.exchange = 'Kraken';
+    p.raw_pair = extractRawPair(p);
+    p.normalized_pair = extractNormalizedPair(p);
+    p.price_precision = 0; // TODO
+    p.base_precision = 0;
+    p.quote_precision = 0;
+    p.min_quote_quantity = 0;
+    /* eslint-enable no-param-reassign */
+  });
 
   return convertArrayToMap(arr);
 }
