@@ -8,7 +8,7 @@ export interface PairInfo {
   price_precision: number;
   base_precision: number;
   quote_precision: number;
-  min_quote_quantity: number;
+  min_quote_quantity?: number;
   min_base_quantity?: number;
   base_contract?: string; // dex only
   quote_contract?: string; // dex only
@@ -22,6 +22,16 @@ export function convertArrayToMap(arr: PairInfo[]): { [key: string]: PairInfo } 
     map[p.normalized_pair] = p;
   });
   return map;
+}
+
+export interface BitfinexPairInfo extends PairInfo {
+  pair: string;
+  initial_margin: string;
+  minimum_margin: string;
+  maximum_order_size: string;
+  minimum_order_size: string;
+  expiration: string;
+  margin: boolean;
 }
 
 export interface NewdexPairInfo extends PairInfo {

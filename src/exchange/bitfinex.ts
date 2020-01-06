@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { BitfinexPairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
 function extractNormalizedPair(pairInfo: PairInfo): string {
   const rawPair = pairInfo.raw_pair.toUpperCase();
@@ -12,21 +12,21 @@ function extractNormalizedPair(pairInfo: PairInfo): string {
 }
 
 /* eslint-disable no-param-reassign */
-function populateCommonFields(pairInfo: PairInfo): void {
+function populateCommonFields(pairInfo: BitfinexPairInfo): void {
   pairInfo.exchange = 'Bitfinex';
+  pairInfo.raw_pair = pairInfo.pair;
   pairInfo.normalized_pair = extractNormalizedPair(pairInfo);
-  pairInfo.price_precision = 0; // TODO
-  pairInfo.base_precision = 0;
-  pairInfo.quote_precision = 0;
-  pairInfo.min_quote_quantity = 0;
+  pairInfo.base_precision = 8; // see https://github.com/bitfinexcom/bfx-api-node-util/blob/master/lib/precision.js
+  pairInfo.quote_precision = pairInfo.price_precision;
+  pairInfo.min_base_quantity = parseFloat(pairInfo.minimum_order_size);
 }
 /* eslint-enable no-param-reassign */
 
 export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
-  const response = await axios.get('https://api.bitfinex.com/v1/symbols');
+  const response = await axios.get('https://api.bitfinex.com/v1/symbols_details');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
-  const arr = (response.data as string[]).map(x => ({ raw_pair: x } as PairInfo));
+  const arr = response.data as BitfinexPairInfo[];
 
   arr.forEach(p => populateCommonFields(p));
 
