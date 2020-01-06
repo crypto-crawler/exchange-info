@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, OKExSpotPairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { convertArrayToMap, OKExSpotPairInfo, PairInfo } from '../pojo/pair_info';
 
 function extractRawPair(pairInfo: OKExSpotPairInfo): string {
   return pairInfo.symbol;
@@ -23,9 +23,10 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
     p.exchange = 'OKEx_Spot';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
-    p.price_precision = 0; // TODO
-    p.base_precision = 0;
-    p.quote_precision = 0;
+    p.price_precision = p.maxPriceDigit;
+    p.base_precision = p.maxSizeDigit;
+    p.quote_precision = p.maxPriceDigit;
+    p.min_base_quantity = p.minTradeSize;
     p.min_quote_quantity = 0;
     /* eslint-enable no-param-reassign */
   });
