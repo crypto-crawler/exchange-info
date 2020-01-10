@@ -1,14 +1,16 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, HuobiPairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { convertArrayToMap, HuobiPairInfo, PairInfo } from '../pojo/pair_info';
 
 function extractRawPair(pairInfo: HuobiPairInfo): string {
   return pairInfo.symbol;
 }
 
 function extractNormalizedPair(pairInfo: HuobiPairInfo): string {
-  return `${pairInfo['base-currency']}_${pairInfo['quote-currency']}`.toUpperCase();
+  let baseSymbol = pairInfo['base-currency'];
+  if (baseSymbol === 'hot') baseSymbol = 'Hydro';
+  return `${baseSymbol}_${pairInfo['quote-currency']}`.toUpperCase();
 }
 
 export async function getPairs(): Promise<{ [key: string]: PairInfo }> {

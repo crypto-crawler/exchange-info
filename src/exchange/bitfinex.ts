@@ -22,6 +22,7 @@ function extractNormalizedPair(pairInfo: PairInfo, mapping: { [key: string]: str
 
   let baseSymbol = rawPair.substring(0, rawPair.length - 3);
   if (baseSymbol in mapping) baseSymbol = mapping[baseSymbol];
+  if (baseSymbol === 'HOT') baseSymbol = 'HYDRO';
 
   let quoteSymbol = rawPair.substring(rawPair.length - 3);
   if (quoteSymbol in mapping) quoteSymbol = mapping[quoteSymbol];
