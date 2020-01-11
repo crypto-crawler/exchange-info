@@ -54,7 +54,6 @@ function extractNormalizedPair(pairInfo: KrakenPairInfo): string {
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  assert.equal(filter, 'All');
   const response = await axios.get('https://api.kraken.com/0/public/AssetPairs');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -71,10 +70,12 @@ export async function getPairs(
     p.quote_precision = p.pair_decimals;
     p.min_quote_quantity = 0;
     p.min_base_quantity = MIN_BASE_QUANTITY[p.normalized_pair.split('_')[0]];
+    p.spot_enabled = true;
     /* eslint-enable no-param-reassign */
   });
 
-  return convertArrayToMap(arr);
+  if (filter === 'All' || filter === 'Spot') return convertArrayToMap(arr);
+  return {};
 }
 
 export async function getExchangeInfo(

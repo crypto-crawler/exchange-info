@@ -6,7 +6,6 @@ import { PairInfo } from '../pojo/pair_info';
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  assert.equal(filter, 'All');
   const response = await axios.get('https://www.mxc.com/open/api/v1/data/markets_info');
   assert.equal(response.status, 200);
   assert.equal(response.data.code, 200);
@@ -21,9 +20,11 @@ export async function getPairs(
     pairInfo.base_precision = pairInfo.quantityScale;
     pairInfo.quote_precision = pairInfo.priceScale;
     pairInfo.min_quote_quantity = pairInfo.minAmount;
+    pairInfo.spot_enabled = true;
   });
 
-  return map;
+  if (filter === 'All' || filter === 'Spot') return map;
+  return {};
 }
 
 export async function getExchangeInfo(

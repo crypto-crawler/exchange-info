@@ -42,13 +42,13 @@ function populateCommonFields(pairInfo: NewdexPairInfo): void {
   pairInfo.quote_precision = parseInt(pairInfo.quote_symbol.sym.split(',')[0], 10); // 4
   pairInfo.base_contract = pairInfo.base_symbol.contract;
   pairInfo.quote_contract = pairInfo.quote_symbol.contract;
+  pairInfo.spot_enabled = true;
 }
 /* eslint-enable no-param-reassign */
 
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  assert.equal(filter, 'All');
   const arr: NewdexPairInfo[] = [];
   let more = true;
   let lowerBound = 1;
@@ -60,7 +60,8 @@ export async function getPairs(
       table: 'exchangepair',
       lower_bound: lowerBound,
     });
-    const pairs = (result.rows as NewdexPairInfo[]).filter(x => x.status === 0);
+    let pairs = result.rows as NewdexPairInfo[];
+    if (filter !== 'All') pairs = pairs.filter(x => x.status === 0);
     arr.push(...pairs);
     more = result.more;
     if (pairs.length > 0) {

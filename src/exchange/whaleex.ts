@@ -49,11 +49,12 @@ async function populateQuoteContract(pairInfos: WhaleExPairInfo[]): Promise<void
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  assert.equal(filter, 'All');
   const response = await axios.get('https://api.whaleex.com/BUSINESS/api/public/symbol');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
-  const arr = (response.data as Array<WhaleExPairInfo>).filter(x => x.enable && x.status === 'ON');
+
+  let arr = response.data as Array<WhaleExPairInfo>;
+  if (filter !== 'All') arr = arr.filter(x => x.enable && x.status === 'ON');
 
   arr.forEach(p => populateCommonFields(p));
 

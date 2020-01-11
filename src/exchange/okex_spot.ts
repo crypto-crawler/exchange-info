@@ -14,12 +14,13 @@ function extractNormalizedPair(pairInfo: OKExSpotPairInfo): string {
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  assert.equal(filter, 'All');
   const response = await axios.get(`https://www.okex.com/v2/spot/markets/products?t=${Date.now()}`);
   assert.equal(response.status, 200);
   assert.equal(response.statusText, '');
   assert.equal(response.data.code, 0);
-  const arr = (response.data.data as Array<OKExSpotPairInfo>).filter(x => x.online === 1);
+
+  let arr = response.data.data as Array<OKExSpotPairInfo>;
+  if (filter !== 'All') arr = arr.filter(x => x.online);
 
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
@@ -31,8 +32,23 @@ export async function getPairs(
     p.quote_precision = p.maxPriceDigit;
     p.min_base_quantity = p.minTradeSize;
     p.min_quote_quantity = 0;
+    p.spot_enabled = true;
+    p.futures_enabled = p.isMarginOpen;
     /* eslint-enable no-param-reassign */
   });
+
+  if (filter !== 'All') {
+    switch (filter) {
+      case 'Spot':
+        arr = arr.filter(x => x.spot_enabled);
+        break;
+      case 'Futures':
+        arr = arr.filter(x => x.futures_enabled);
+        break;
+      default:
+        throw Error(`Unsupported filter ${filter}`);
+    }
+  }
 
   return convertArrayToMap(arr);
 }
