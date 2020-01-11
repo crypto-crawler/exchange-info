@@ -15,11 +15,10 @@ function extractNormalizedPair(pairInfo: CoinbasePairInfo): string {
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  assert.equal(filter, 'All');
   const response = await axios.get('https://api.pro.coinbase.com/products');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
-  const arr = (response.data as Array<CoinbasePairInfo>).filter(x => x.status === 'online');
+  let arr = response.data as Array<CoinbasePairInfo>;
 
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
@@ -31,8 +30,18 @@ export async function getPairs(
     p.quote_precision = calcPrecision(p.quote_increment);
     p.min_quote_quantity = parseFloat(p.min_market_funds);
     p.min_base_quantity = parseFloat(p.base_min_size);
+    p.spot_enabled = true;
+    p.futures_enabled = p.margin_enabled;
     /* eslint-enable no-param-reassign */
   });
+
+  if (filter !== 'All') {
+    arr = arr.filter(x => x.status === 'online');
+
+    if (filter === 'Futures') {
+      arr = arr.filter(x => x.futures_enabled);
+    }
+  }
 
   return convertArrayToMap(arr);
 }
