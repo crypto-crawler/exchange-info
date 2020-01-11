@@ -12,6 +12,11 @@ export interface PairInfo {
   min_base_quantity?: number;
   base_contract?: string; // dex only
   quote_contract?: string; // dex only
+  spot_enabled?: boolean;
+  futures_enabled?: boolean;
+  swap_enabled?: boolean;
+  deposit_enabled?: boolean;
+  withdraw_enabled?: boolean;
   [key: string]: any;
 }
 

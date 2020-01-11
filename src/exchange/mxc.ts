@@ -3,7 +3,10 @@ import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PairInfo } from '../pojo/pair_info';
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
+  assert.equal(filter, 'All');
   const response = await axios.get('https://www.mxc.com/open/api/v1/data/markets_info');
   assert.equal(response.status, 200);
   assert.equal(response.data.code, 200);
@@ -23,7 +26,9 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   return map;
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'MXC',
     api_doc: 'https://github.com/mxcdevelop/APIDoc',
@@ -36,6 +41,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

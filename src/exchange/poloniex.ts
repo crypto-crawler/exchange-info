@@ -3,7 +3,10 @@ import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PoloniexPairInfo } from '../pojo/pair_info';
 
-export async function getPairs(): Promise<{ [key: string]: PoloniexPairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PoloniexPairInfo }> {
+  assert.equal(filter, 'All');
   const response = await axios.get('https://poloniex.com/public?command=returnTicker');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -28,7 +31,9 @@ export async function getPairs(): Promise<{ [key: string]: PoloniexPairInfo }> {
   return result;
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'Poloniex',
     api_doc: 'https://docs.poloniex.com/',
@@ -41,6 +46,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

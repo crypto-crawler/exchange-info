@@ -1,14 +1,17 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
 interface RawPairInfo {
   jpy: { [key: string]: string };
   btc: { [key: string]: string };
 }
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
+  assert.equal(filter, 'All');
   const response = await axios.get('https://coincheck.com/api/rate/all');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -36,7 +39,9 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   return convertArrayToMap(arr);
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'Coincheck',
     api_doc: 'https://coincheck.com/documents/exchange/api',
@@ -49,6 +54,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

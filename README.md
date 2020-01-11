@@ -25,7 +25,16 @@ npx exchange-info --exchange Newdex
 There is only one API in this library:
 
 ```typescript
-async function getExchangeInfo(exchangeName: SupportedExchange): Promise<ExchangeInfo>;
+/**
+ * Get all informaton about a crypto exchange.
+ *
+ * @param exchangeName The name of the exchange
+ * @param filter All, no filtering; Spot, only spot tradable pairs; Margin, only margin tradable pairs
+ */
+export default function getExchangeInfo(
+  exchangeName: SupportedExchange,
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo>;
 ```
 
 Which returns an `ExchangeInfo`:

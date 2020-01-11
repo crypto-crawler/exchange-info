@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
 function extractRawPair(rawInfo: { product_code: string; alias: string }): string {
   return rawInfo.product_code;
@@ -11,7 +11,10 @@ function extractNormalizedPair(rawInfo: { product_code: string; alias: string })
   return rawInfo.product_code;
 }
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
+  assert.equal(filter, 'All');
   const response = await axios.get('https://api.bitflyer.jp/v1/markets');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -36,7 +39,9 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   return convertArrayToMap(arr2);
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'bitFlyer',
     api_doc: 'https://lightning.bitflyer.com/docs?lang=en',
@@ -49,6 +54,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

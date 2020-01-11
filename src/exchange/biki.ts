@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, BikiPairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { BikiPairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: BikiPairInfo): void {
@@ -14,7 +14,10 @@ function populateCommonFields(pairInfo: BikiPairInfo): void {
 }
 /* eslint-enable no-param-reassign */
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
+  assert.equal(filter, 'All');
   const response = await axios.get('https://openapi.biki.com/open/api/common/symbols');
   assert.equal(response.status, 200);
   assert.equal(response.data.code, '0');
@@ -26,7 +29,9 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   return convertArrayToMap(arr);
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'Biki',
     api_doc: 'https://github.com/code-biki/open-api',
@@ -39,6 +44,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

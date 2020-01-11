@@ -11,7 +11,10 @@ function extractNormalizedPair(pairInfo: OKExSpotPairInfo): string {
   return pairInfo.symbol.toUpperCase();
 }
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
+  assert.equal(filter, 'All');
   const response = await axios.get(`https://www.okex.com/v2/spot/markets/products?t=${Date.now()}`);
   assert.equal(response.status, 200);
   assert.equal(response.statusText, '');
@@ -34,7 +37,9 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   return convertArrayToMap(arr);
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'OKEx_Spot',
     api_doc: 'https://www.okex.com/docs/en/',
@@ -47,6 +52,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

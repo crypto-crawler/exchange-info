@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, WhaleExPairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { convertArrayToMap, PairInfo, WhaleExPairInfo } from '../pojo/pair_info';
 import { calcPrecision } from '../utils';
 
 /* eslint-disable no-param-reassign */
@@ -46,7 +46,10 @@ async function populateQuoteContract(pairInfos: WhaleExPairInfo[]): Promise<void
 }
 /* eslint-enable no-param-reassign */
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
+  assert.equal(filter, 'All');
   const response = await axios.get('https://api.whaleex.com/BUSINESS/api/public/symbol');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -59,7 +62,9 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   return convertArrayToMap(arr);
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'WhaleEx',
     api_doc: 'https://github.com/WhaleEx/API',
@@ -73,6 +78,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

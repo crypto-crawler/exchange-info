@@ -13,12 +13,16 @@ function extractNormalizedPair(pairInfo: HuobiPairInfo): string {
   return `${baseSymbol}_${pairInfo['quote-currency']}`.toUpperCase();
 }
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://api.huobi.pro/v1/common/symbols');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
   assert.equal(response.data.status, 'ok');
-  const arr = (response.data.data as Array<HuobiPairInfo>).filter(x => x.state === 'online');
+
+  let arr = response.data.data as Array<HuobiPairInfo>;
+  arr = arr.filter(x => x.state === 'online');
 
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
@@ -33,10 +37,52 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
     /* eslint-enable no-param-reassign */
   });
 
+  if (filter !== 'All') {
+    interface Info {
+      quote_currency: boolean;
+      show_precision: string;
+      currency_code: string;
+      withdraw_precision: string;
+      visible: boolean;
+      white_enabled: boolean;
+      country_disabled: boolean;
+      deposit_enabled: boolean;
+      withdraw_enabled: boolean;
+      state: string;
+      display_name: string;
+    }
+    const infos = (await axios.get('https://www.huobi.com/-/x/pro/v2/beta/common/currencies')).data
+      .data as Info[];
+    const infoMap: { [key: string]: Info } = {};
+    infos.forEach(info => {
+      infoMap[info.display_name] = info;
+    });
+
+    arr = arr.filter(pairInfo => {
+      let baseSymbol = pairInfo.normalized_pair.split('_')[0];
+      if (baseSymbol === 'HYDRO') baseSymbol = 'HOT'; // restore
+      if (!(baseSymbol in infoMap)) throw Error(baseSymbol);
+      const info = infoMap[baseSymbol];
+
+      pairInfo.deposit_enabled = info.deposit_enabled; // eslint-disable-line no-param-reassign
+      pairInfo.withdraw_enabled = info.withdraw_enabled; // eslint-disable-line no-param-reassign
+
+      return (
+        info.visible &&
+        !info.country_disabled &&
+        info.state === 'online' &&
+        pairInfo.deposit_enabled &&
+        pairInfo.withdraw_enabled
+      );
+    });
+  }
+
   return convertArrayToMap(arr);
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'Huobi',
     api_doc: 'https://huobiapi.github.io/docs/spot/v1/en/',
@@ -49,6 +95,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

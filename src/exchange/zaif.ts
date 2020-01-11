@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, ZaifPairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { convertArrayToMap, PairInfo, ZaifPairInfo } from '../pojo/pair_info';
 
 function extractRawPair(pairInfo: ZaifPairInfo): string {
   return pairInfo.currency_pair;
@@ -13,7 +13,10 @@ function extractNormalizedPair(pairInfo: ZaifPairInfo): string {
   return pairInfo.currency_pair.toUpperCase();
 }
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
+  assert.equal(filter, 'All');
   const response = await axios.get('https://api.zaif.jp/api/1/currency_pairs/all');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
@@ -34,7 +37,9 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   return convertArrayToMap(arr);
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'Zaif',
     api_doc: 'https://zaif-api-document.readthedocs.io/ja/latest/index.html',
@@ -47,6 +52,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

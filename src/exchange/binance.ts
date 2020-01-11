@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, BinancePairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { BinancePairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
 import { calcPrecision } from '../utils';
 
 /* eslint-disable no-param-reassign */
@@ -23,6 +23,8 @@ function populateCommonFields(pairInfo: BinancePairInfo): void {
   pairInfo.min_base_quantity = parseFloat(
     pairInfo.filters.filter(x => x.filterType === 'LOT_SIZE')[0].minQty,
   );
+  pairInfo.spot_enabled = pairInfo.isSpotTradingAllowed;
+  pairInfo.futures_enabled = pairInfo.isMarginTradingAllowed;
 }
 /* eslint-enable no-param-reassign */
 
@@ -62,11 +64,30 @@ export async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<
   }
 }
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
   const response = await axios.get('https://api.binance.com/api/v3/exchangeInfo');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
-  const arr = (response.data.symbols as Array<BinancePairInfo>).filter(x => x.status === 'TRADING');
+
+  let arr = response.data.symbols as Array<BinancePairInfo>;
+  if (filter !== 'All') {
+    arr = arr.filter(x => x.status === 'TRADING');
+    switch (filter) {
+      case 'Spot':
+        arr = arr.filter(x => x.isSpotTradingAllowed);
+        break;
+      case 'Futures':
+        arr = arr.filter(x => x.isMarginTradingAllowed);
+        break;
+      case 'Swap':
+        arr = [];
+        break;
+      default:
+        throw Error(`Unknown filter value ${filter}`);
+    }
+  }
 
   arr.forEach(p => populateCommonFields(p));
 
@@ -75,7 +96,9 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   return convertArrayToMap(arr);
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'Binance',
     api_doc: 'https://github.com/binance-exchange/binance-official-api-docs',
@@ -88,6 +111,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }

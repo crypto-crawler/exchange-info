@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
 import { ExchangeInfo } from '../pojo/exchange_info';
-import { PairInfo, UpbitPairInfo, convertArrayToMap } from '../pojo/pair_info';
+import { convertArrayToMap, PairInfo, UpbitPairInfo } from '../pojo/pair_info';
 
 function extractRawPair(pairInfo: UpbitPairInfo): string {
   return pairInfo.market;
@@ -13,7 +13,10 @@ function extractNormalizedPair(pairInfo: UpbitPairInfo): string {
   return `${arr[1]}_${arr[0]}`;
 }
 
-export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
+export async function getPairs(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<{ [key: string]: PairInfo }> {
+  assert.equal(filter, 'All');
   const response = await axios.get('https://api.upbit.com/v1/market/all');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, '');
@@ -34,7 +37,9 @@ export async function getPairs(): Promise<{ [key: string]: PairInfo }> {
   return convertArrayToMap(arr);
 }
 
-export async function getExchangeInfo(): Promise<ExchangeInfo> {
+export async function getExchangeInfo(
+  filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
+): Promise<ExchangeInfo> {
   const info: ExchangeInfo = {
     name: 'Upbit',
     api_doc: 'https://docs.upbit.com/',
@@ -47,6 +52,6 @@ export async function getExchangeInfo(): Promise<ExchangeInfo> {
     pairs: {},
   };
 
-  info.pairs = await getPairs();
+  info.pairs = await getPairs(filter);
   return info;
 }
