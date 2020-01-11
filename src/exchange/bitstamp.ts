@@ -19,9 +19,6 @@ export async function getPairs(
   assert.equal(response.statusText, 'OK');
 
   let arr = response.data as BitstampPairInfo[];
-  if (filter !== 'All') {
-    arr = arr.filter(x => x.trading === 'Enabled');
-  }
 
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
@@ -32,8 +29,16 @@ export async function getPairs(
     p.base_precision = p.base_decimals;
     p.quote_precision = p.counter_decimals;
     p.min_quote_quantity = parseFloat(p.minimum_order.split(' ')[0]);
+    p.spot_enabled = true;
+    p.futures_enabled = false;
+    p.swap_enabled = false;
     /* eslint-enable no-param-reassign */
   });
+
+  if (filter !== 'All') {
+    arr = arr.filter(x => x.trading === 'Enabled');
+    if (filter !== 'Spot') arr = [];
+  }
 
   return convertArrayToMap(arr);
 }
