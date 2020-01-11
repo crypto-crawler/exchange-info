@@ -14,11 +14,14 @@ function extractNormalizedPair(pairInfo: BitstampPairInfo): string {
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  assert.equal(filter, 'All');
   const response = await axios.get('https://www.bitstamp.net/api/v2/trading-pairs-info/');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
-  const arr = (response.data as Array<BitstampPairInfo>).filter(x => x.trading === 'Enabled');
+
+  let arr = response.data as BitstampPairInfo[];
+  if (filter !== 'All') {
+    arr = arr.filter(x => x.trading === 'Enabled');
+  }
 
   arr.forEach(p => {
     /* eslint-disable no-param-reassign */
