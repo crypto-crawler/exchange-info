@@ -41,21 +41,29 @@ function populateCommonFields(
   pairInfo.base_precision = 8; // see https://github.com/bitfinexcom/bfx-api-node-util/blob/master/lib/precision.js
   pairInfo.quote_precision = pairInfo.price_precision;
   pairInfo.min_base_quantity = parseFloat(pairInfo.minimum_order_size);
+  pairInfo.spot_enabled = true;
+  pairInfo.futures_enabled = pairInfo.margin;
 }
 /* eslint-enable no-param-reassign */
 
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  assert.equal(filter, 'All');
   const response = await axios.get('https://api.bitfinex.com/v1/symbols_details');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
 
   const mapping = await getNameMapping();
-  const arr = response.data as BitfinexPairInfo[];
+  let arr = response.data as BitfinexPairInfo[];
 
   arr.forEach(p => populateCommonFields(p, mapping));
+
+  if (filter !== 'All') {
+    arr = arr.filter(p => p.expiration === 'NA');
+    if (filter === 'Futures') {
+      arr = arr.filter(p => p.futures_enabled);
+    }
+  }
 
   return convertArrayToMap(arr);
 }
