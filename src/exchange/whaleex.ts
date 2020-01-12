@@ -8,7 +8,9 @@ import { calcPrecision } from '../utils';
 function populateCommonFields(pairInfo: WhaleExPairInfo): void {
   pairInfo.exchange = 'WhaleEx';
   pairInfo.raw_pair = pairInfo.name;
-  pairInfo.normalized_pair = `${pairInfo.baseCurrency}_${pairInfo.quoteCurrency}`;
+  pairInfo.normalized_pair = `${
+    pairInfo.baseCurrency === 'KEY' ? 'MYKEY' : pairInfo.baseCurrency
+  }_${pairInfo.quoteCurrency}`;
   pairInfo.price_precision = calcPrecision(pairInfo.tickSize);
   pairInfo.base_precision = pairInfo.basePrecision;
   pairInfo.quote_precision = pairInfo.quotePrecision;

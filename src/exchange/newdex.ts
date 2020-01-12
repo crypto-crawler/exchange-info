@@ -34,9 +34,9 @@ export async function getGlobalConfig(): Promise<{
 function populateCommonFields(pairInfo: NewdexPairInfo): void {
   pairInfo.exchange = 'Newdex';
   pairInfo.raw_pair = pairInfo.pair_symbol;
-  pairInfo.normalized_pair = `${pairInfo.base_symbol.sym.split(',')[1]}_${
-    pairInfo.quote_symbol.sym.split(',')[1]
-  }`;
+  let baseSymbol = pairInfo.base_symbol.sym.split(',')[1];
+  if (baseSymbol === 'KEY') baseSymbol = 'MYKEY';
+  pairInfo.normalized_pair = `${baseSymbol}_${pairInfo.quote_symbol.sym.split(',')[1]}`;
   pairInfo.base_precision = parseInt(pairInfo.base_symbol.sym.split(',')[0], 10);
   pairInfo.min_quote_quantity = 0.01; // TODO
   pairInfo.quote_precision = parseInt(pairInfo.quote_symbol.sym.split(',')[0], 10); // 4
