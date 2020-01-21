@@ -1,6 +1,6 @@
 {
   "name": "exchange-info",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "Get everything you need to know about a crypto exchange.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -53,7 +53,7 @@
   "dependencies": {
     "assert": "^2.0.0",
     "axios": "^0.19.1",
-    "eos-utils": "0.1.4",
+    "eos-utils": "0.1.5",
     "eosjs": "^20.0.3",
     "node-fetch": "^2.6.0",
     "yargs": "^15.1.0"
