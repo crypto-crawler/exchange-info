@@ -5,7 +5,7 @@ import { convertArrayToMap, NewdexPairInfo, PairInfo } from '../pojo/pair_info';
 
 const promiseAny = require('promise.any');
 
-async function getTableRowsRobus(table: string, lower_bound?: number): Promise<TableRows> {
+async function getTableRowsRobust(table: string, lower_bound?: number): Promise<TableRows> {
   return promiseAny(
     EOS_API_ENDPOINTS.map(url =>
       getTableRows(
@@ -26,7 +26,7 @@ export async function getGlobalConfig(): Promise<{
   maker_fee: number;
   taker_fee: number;
 }> {
-  const tableRows = await getTableRowsRobus('globalconfig');
+  const tableRows = await getTableRowsRobust('globalconfig');
   assert.ok(!tableRows.more);
 
   const arr = tableRows.rows as Array<{
@@ -68,7 +68,7 @@ export async function getPairs(
   let lowerBound = 1;
   while (more) {
     // eslint-disable-next-line no-await-in-loop
-    const result = await getTableRowsRobus('exchangepair', lowerBound);
+    const result = await getTableRowsRobust('exchangepair', lowerBound);
     let pairs = result.rows as NewdexPairInfo[];
     if (filter !== 'All') pairs = pairs.filter(x => x.status === 0);
     arr.push(...pairs);
