@@ -1,18 +1,32 @@
 import { strict as assert } from 'assert';
-import { getTableRows } from 'eos-utils';
+import { EOS_API_ENDPOINTS, getTableRows, TableRows } from 'eos-utils';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, NewdexPairInfo, PairInfo } from '../pojo/pair_info';
+
+const promiseAny = require('promise.any');
+
+async function getTableRowsRobus(table: string, lower_bound?: number): Promise<TableRows> {
+  return promiseAny(
+    EOS_API_ENDPOINTS.map(url =>
+      getTableRows(
+        {
+          code: 'newdexpublic',
+          scope: 'newdexpublic',
+          table,
+          lower_bound,
+        },
+        url,
+      ),
+    ),
+  );
+}
 
 export async function getGlobalConfig(): Promise<{
   status: boolean;
   maker_fee: number;
   taker_fee: number;
 }> {
-  const tableRows = await getTableRows({
-    code: 'newdexpublic',
-    scope: 'newdexpublic',
-    table: 'globalconfig',
-  });
+  const tableRows = await getTableRowsRobus('globalconfig');
   assert.ok(!tableRows.more);
 
   const arr = tableRows.rows as Array<{
@@ -54,12 +68,7 @@ export async function getPairs(
   let lowerBound = 1;
   while (more) {
     // eslint-disable-next-line no-await-in-loop
-    const result = await getTableRows({
-      code: 'newdexpublic',
-      scope: 'newdexpublic',
-      table: 'exchangepair',
-      lower_bound: lowerBound,
-    });
+    const result = await getTableRowsRobus('exchangepair', lowerBound);
     let pairs = result.rows as NewdexPairInfo[];
     if (filter !== 'All') pairs = pairs.filter(x => x.status === 0);
     arr.push(...pairs);
