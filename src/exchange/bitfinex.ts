@@ -7,26 +7,29 @@ async function getNameMapping(): Promise<{ [key: string]: string }> {
   const response = await axios.get('https://api-pub.bitfinex.com/v2/conf/pub:map:currency:sym');
   const arr = response.data[0] as [string, string][];
   const result: { [key: string]: string } = {};
-  arr.forEach(x => {
+  arr.sort().forEach(x => {
     const [key, value] = x;
-    result[key] = value;
+    result[key] = value.toUpperCase();
   });
   return result;
 }
 
 function extractNormalizedPair(pairInfo: PairInfo, mapping: { [key: string]: string }): string {
   const rawPair = pairInfo.raw_pair.toUpperCase();
+  let baseSymbol = '';
+  let quoteSymbol = '';
   if (rawPair.includes(':')) {
-    return rawPair.replace(/:/g, '_').toUpperCase();
+    [baseSymbol, quoteSymbol] = rawPair.split(':');
+  } else {
+    baseSymbol = rawPair.slice(0, rawPair.length - 3);
+    quoteSymbol = rawPair.slice(rawPair.length - 3);
   }
 
-  let baseSymbol = rawPair.substring(0, rawPair.length - 3);
   if (baseSymbol in mapping) baseSymbol = mapping[baseSymbol];
+  if (quoteSymbol in mapping) quoteSymbol = mapping[quoteSymbol];
+
   if (baseSymbol === 'HOT') baseSymbol = 'HYDRO';
   if (baseSymbol === 'ORS') baseSymbol = 'ORSGROUP';
-
-  let quoteSymbol = rawPair.substring(rawPair.length - 3);
-  if (quoteSymbol in mapping) quoteSymbol = mapping[quoteSymbol];
 
   return `${baseSymbol}_${quoteSymbol}`;
 }
@@ -58,6 +61,7 @@ export async function getPairs(
   let arr = response.data as BitfinexPairInfo[];
 
   arr.forEach(p => populateCommonFields(p, mapping));
+  arr = arr.filter(x => !x.normalized_pair.endsWith('USDT0')); // Remove Derivatives
 
   if (filter !== 'All') {
     arr = arr.filter(p => p.expiration === 'NA');
