@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { BinancePairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
 import { calcPrecision } from '../utils';
@@ -9,6 +10,7 @@ function populateCommonFields(pairInfo: BinancePairInfo): void {
   pairInfo.exchange = 'Binance';
   pairInfo.raw_pair = pairInfo.symbol;
   pairInfo.normalized_pair = `${pairInfo.baseAsset}_${pairInfo.quoteAsset}`;
+  assert.equal(pairInfo.normalized_pair, normalize(pairInfo.raw_pair, 'Binance'));
 
   pairInfo.price_precision = calcPrecision(
     pairInfo.filters.filter(x => x.filterType === 'PRICE_FILTER')[0].tickSize,

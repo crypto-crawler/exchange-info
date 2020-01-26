@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
@@ -34,8 +35,10 @@ export async function getPairs(
       quote_precision: 0,
       min_quote_quantity: 0,
     };
+    assert.equal(pairInfo.normalized_pair, normalize(pairInfo.raw_pair, 'Coincheck'));
     return pairInfo;
   });
+
   return convertArrayToMap(arr);
 }
 

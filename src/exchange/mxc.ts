@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PairInfo } from '../pojo/pair_info';
 
@@ -16,6 +17,7 @@ export async function getPairs(
     pairInfo.exchange = 'MXC';
     pairInfo.raw_pair = key;
     pairInfo.normalized_pair = key;
+    assert.equal(pairInfo.normalized_pair, normalize(pairInfo.raw_pair, 'MXC'));
     pairInfo.price_precision = pairInfo.priceScale;
     pairInfo.base_precision = pairInfo.quantityScale;
     pairInfo.quote_precision = pairInfo.priceScale;

@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, HuobiPairInfo, PairInfo } from '../pojo/pair_info';
 
@@ -29,6 +30,7 @@ export async function getPairs(
     p.exchange = 'Huobi';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
+    assert.equal(p.normalized_pair, normalize(p.raw_pair, 'Huobi'));
     p.price_precision = p['price-precision'];
     p.base_precision = p['amount-precision'];
     p.quote_precision = p['value-precision'];

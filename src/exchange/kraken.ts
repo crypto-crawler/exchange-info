@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, KrakenPairInfo, PairInfo } from '../pojo/pair_info';
 
@@ -66,6 +67,7 @@ export async function getPairs(
     p.exchange = 'Kraken';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
+    assert.equal(p.normalized_pair, normalize(p.raw_pair, 'Kraken'));
     p.price_precision = p.pair_decimals;
     p.base_precision = p.lot_decimals;
     p.quote_precision = p.pair_decimals;

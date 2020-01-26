@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { PoloniexPairInfo } from '../pojo/pair_info';
 
@@ -19,6 +20,7 @@ export async function getPairs(
     p.raw_pair = key;
     const tmp = key.split('_');
     p.normalized_pair = `${tmp[1]}_${tmp[0]}`;
+    assert.equal(p.normalized_pair, normalize(p.raw_pair, 'Poloniex'));
     p.price_precision = 0; // TODO
     p.base_precision = 0;
     p.quote_precision = 0;

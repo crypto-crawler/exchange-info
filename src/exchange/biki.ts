@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { BikiPairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
@@ -8,6 +9,7 @@ function populateCommonFields(pairInfo: BikiPairInfo): void {
   pairInfo.exchange = 'Biki';
   pairInfo.raw_pair = pairInfo.symbol;
   pairInfo.normalized_pair = `${pairInfo.base_coin}_${pairInfo.count_coin}`;
+  assert.equal(pairInfo.normalized_pair, normalize(pairInfo.raw_pair, 'Biki'));
   pairInfo.base_precision = pairInfo.amount_precision;
   pairInfo.min_quote_quantity = parseFloat(pairInfo.limit_volume_min);
   pairInfo.quote_precision = 0; // TODO

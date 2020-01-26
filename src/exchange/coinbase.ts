@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { CoinbasePairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
 import { calcPrecision } from '../utils';
@@ -25,6 +26,7 @@ export async function getPairs(
     p.exchange = 'Coinbase';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
+    assert.equal(p.normalized_pair, normalize(p.raw_pair, 'Coinbase'));
     p.price_precision = calcPrecision(p.quote_increment);
     p.base_precision = calcPrecision(p.base_increment);
     p.quote_precision = calcPrecision(p.quote_increment);

@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { BitstampPairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
@@ -25,6 +26,7 @@ export async function getPairs(
     p.exchange = 'Bitstamp';
     p.raw_pair = extractRawPair(p);
     p.normalized_pair = extractNormalizedPair(p);
+    assert.equal(p.normalized_pair, normalize(p.raw_pair, 'Bitstamp'));
     p.price_precision = p.counter_decimals;
     p.base_precision = p.base_decimals;
     p.quote_precision = p.counter_decimals;

@@ -1,4 +1,5 @@
 import { strict as assert } from 'assert';
+import normalize from 'crypto-pair';
 import { EOS_API_ENDPOINTS, getTableRows, TableRows } from 'eos-utils';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, NewdexPairInfo, PairInfo } from '../pojo/pair_info';
@@ -51,6 +52,7 @@ function populateCommonFields(pairInfo: NewdexPairInfo): void {
   let baseSymbol = pairInfo.base_symbol.sym.split(',')[1];
   if (baseSymbol === 'KEY') baseSymbol = 'MYKEY';
   pairInfo.normalized_pair = `${baseSymbol}_${pairInfo.quote_symbol.sym.split(',')[1]}`;
+  assert.equal(pairInfo.normalized_pair, normalize(pairInfo.raw_pair, 'Newdex'));
   pairInfo.base_precision = parseInt(pairInfo.base_symbol.sym.split(',')[0], 10);
   pairInfo.min_quote_quantity = 0.01; // TODO
   pairInfo.quote_precision = parseInt(pairInfo.quote_symbol.sym.split(',')[0], 10); // 4
