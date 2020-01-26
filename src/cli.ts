@@ -4,19 +4,24 @@ import yargs from 'yargs';
 import { EXCHANGES, SupportedExchange } from './exchange/supported_exchange';
 import getExchangeInfo from './index';
 
-const { argv } = yargs.options({
-  exchange: {
-    choices: EXCHANGES,
-    type: 'string',
-    demandOption: true,
-  },
-  filter: {
-    choices: ['All', 'Spot', 'Futures', 'Swap'],
-    type: 'string',
-    demandOption: true,
-    default: 'All',
-  },
-});
+const { argv } = yargs
+  // eslint-disable-next-line no-shadow
+  .command('$0 <exchange> [filter]', 'Get exchange info', yargs => {
+    yargs
+      .positional('exchange', {
+        choices: EXCHANGES,
+        type: 'string',
+        describe: 'The exchange name',
+      })
+      .options({
+        filter: {
+          choices: ['All', 'Spot', 'Futures', 'Swap'],
+          type: 'string',
+          demandOption: true,
+          default: 'All',
+        },
+      });
+  });
 
 (async () => {
   const result = await getExchangeInfo(
