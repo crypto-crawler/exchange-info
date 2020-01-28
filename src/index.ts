@@ -18,7 +18,7 @@ import * as Zaif from './exchange/zaif';
 import * as ZB from './exchange/zb';
 import { ExchangeInfo } from './pojo/exchange_info';
 
-export { SupportedExchange } from './exchange/supported_exchange';
+export { SupportedExchange, SUPPORTED_EXCHANGES } from './exchange/supported_exchange';
 export { ExchangeInfo } from './pojo/exchange_info';
 export * from './pojo/pair_info';
 

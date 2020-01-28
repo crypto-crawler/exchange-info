@@ -1,4 +1,4 @@
-export const EXCHANGES = [
+export const SUPPORTED_EXCHANGES = [
   'Biki',
   'Binance',
   'Bitfinex',
@@ -18,4 +18,4 @@ export const EXCHANGES = [
   'bitFlyer',
 ] as const;
 
-export type SupportedExchange = typeof EXCHANGES[number];
+export type SupportedExchange = typeof SUPPORTED_EXCHANGES[number];
