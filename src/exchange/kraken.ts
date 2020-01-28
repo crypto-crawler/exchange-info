@@ -1,6 +1,5 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
-import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, KrakenPairInfo, PairInfo } from '../pojo/pair_info';
 
@@ -39,8 +38,47 @@ const MIN_BASE_QUANTITY: { [key: string]: number } = {
   ZEC: 0.03,
 };
 
-function extractRawPair(pairInfo: KrakenPairInfo): string {
-  return pairInfo.wsname;
+const QUOTE_SYMBOLS = [
+  'BTC',
+  'ETH',
+  'EUR',
+  'USD',
+  'CAD',
+  'CHF',
+  'DAI',
+  'GBP',
+  'JPY',
+  'USDC',
+  'USDT',
+];
+
+function safeCurrencyCode(currencyId: string): string {
+  let result = currencyId;
+  if (currencyId.length > 3) {
+    if (currencyId.indexOf('X') === 0 || currencyId.indexOf('Z') === 0) {
+      result = currencyId.slice(1);
+    }
+  }
+
+  if (result === 'XBT') result = 'BTC';
+  if (result === 'XDG') result = 'DOGE';
+
+  return result;
+}
+
+function normalize(rawPair: string): string {
+  let base = safeCurrencyCode(rawPair.slice(0, rawPair.length - 4));
+  let quote = safeCurrencyCode(rawPair.slice(rawPair.length - 4));
+  // handle ICXETH
+  if (!QUOTE_SYMBOLS.includes(quote) || (base.length === 2 && base !== 'SC')) {
+    base = safeCurrencyCode(rawPair.slice(0, rawPair.length - 3));
+    quote = safeCurrencyCode(rawPair.slice(rawPair.length - 3));
+  }
+  if (!QUOTE_SYMBOLS.includes(quote)) {
+    throw new Error(`Failed to parse Kraken raw pair ${rawPair}`);
+  }
+
+  return `${base}_${quote}`;
 }
 
 function extractNormalizedPair(pairInfo: KrakenPairInfo): string {
@@ -50,7 +88,13 @@ function extractNormalizedPair(pairInfo: KrakenPairInfo): string {
     if (arr[i] === 'XBT') arr[i] = 'BTC';
     if (arr[i] === 'XDG') arr[i] = 'DOGE';
   }
-  return `${arr[0]}_${arr[1]}`;
+  const result = `${arr[0]}_${arr[1]}`;
+
+  const base = safeCurrencyCode(pairInfo.base);
+  const quote = safeCurrencyCode(pairInfo.quote);
+  assert.equal(result, `${base}_${quote}`);
+
+  return result;
 }
 
 export async function getPairs(
@@ -61,19 +105,26 @@ export async function getPairs(
   assert.equal(response.statusText, 'OK');
   assert.equal(response.data.error.length, 0);
 
-  const arr = (Object.values(response.data.result) as Array<KrakenPairInfo>).filter(x => x.wsname);
-  arr.forEach(p => {
+  const data = response.data.result as { [key: string]: KrakenPairInfo };
+  const arr: KrakenPairInfo[] = [];
+
+  Object.keys(data).forEach(rawPair => {
+    const p = data[rawPair];
+    if (!p.wsname) return;
+
     /* eslint-disable no-param-reassign */
     p.exchange = 'Kraken';
-    p.raw_pair = extractRawPair(p);
+    p.raw_pair = rawPair;
     p.normalized_pair = extractNormalizedPair(p);
-    assert.equal(p.normalized_pair, normalize(p.raw_pair, 'Kraken'));
+    assert.equal(p.normalized_pair, normalize(rawPair));
     p.price_precision = p.pair_decimals;
     p.base_precision = p.lot_decimals;
     p.quote_precision = p.pair_decimals;
     p.min_quote_quantity = 0;
     p.min_base_quantity = MIN_BASE_QUANTITY[p.normalized_pair.split('_')[0]];
     p.spot_enabled = true;
+
+    arr.push(p);
     /* eslint-enable no-param-reassign */
   });
 

@@ -6,7 +6,7 @@ import { CoinbasePairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info
 import { calcPrecision } from '../utils';
 
 function extractRawPair(pairInfo: CoinbasePairInfo): string {
-  return pairInfo.display_name;
+  return pairInfo.id;
 }
 
 function extractNormalizedPair(pairInfo: CoinbasePairInfo): string {
