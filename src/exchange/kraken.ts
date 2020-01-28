@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
+import normalize from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, KrakenPairInfo, PairInfo } from '../pojo/pair_info';
 
@@ -38,20 +39,6 @@ const MIN_BASE_QUANTITY: { [key: string]: number } = {
   ZEC: 0.03,
 };
 
-const QUOTE_SYMBOLS = [
-  'BTC',
-  'ETH',
-  'EUR',
-  'USD',
-  'CAD',
-  'CHF',
-  'DAI',
-  'GBP',
-  'JPY',
-  'USDC',
-  'USDT',
-];
-
 function safeCurrencyCode(currencyId: string): string {
   let result = currencyId;
   if (currencyId.length > 3) {
@@ -64,21 +51,6 @@ function safeCurrencyCode(currencyId: string): string {
   if (result === 'XDG') result = 'DOGE';
 
   return result;
-}
-
-function normalize(rawPair: string): string {
-  let base = safeCurrencyCode(rawPair.slice(0, rawPair.length - 4));
-  let quote = safeCurrencyCode(rawPair.slice(rawPair.length - 4));
-  // handle ICXETH
-  if (!QUOTE_SYMBOLS.includes(quote) || (base.length === 2 && base !== 'SC')) {
-    base = safeCurrencyCode(rawPair.slice(0, rawPair.length - 3));
-    quote = safeCurrencyCode(rawPair.slice(rawPair.length - 3));
-  }
-  if (!QUOTE_SYMBOLS.includes(quote)) {
-    throw new Error(`Failed to parse Kraken raw pair ${rawPair}`);
-  }
-
-  return `${base}_${quote}`;
 }
 
 function extractNormalizedPair(pairInfo: KrakenPairInfo): string {
@@ -116,7 +88,7 @@ export async function getPairs(
     p.exchange = 'Kraken';
     p.raw_pair = rawPair;
     p.normalized_pair = extractNormalizedPair(p);
-    assert.equal(p.normalized_pair, normalize(rawPair));
+    assert.equal(p.normalized_pair, normalize(rawPair, 'Kraken'));
     p.price_precision = p.pair_decimals;
     p.base_precision = p.lot_decimals;
     p.quote_precision = p.pair_decimals;
