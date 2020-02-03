@@ -19,6 +19,17 @@ function populateCommonFields(pairInfo: WhaleExPairInfo): void {
   pairInfo.min_quote_quantity = parseFloat(pairInfo.minNotional);
   pairInfo.min_base_quantity = parseFloat(pairInfo.minQty);
   pairInfo.base_contract = pairInfo.baseContract;
+
+  // delete volatile fields
+  delete pairInfo.baseVolume;
+  delete pairInfo.high;
+  delete pairInfo.low;
+  delete pairInfo.lastPrice;
+  delete pairInfo.priceChangePercent;
+  delete pairInfo.quoteVolume;
+  delete pairInfo.weight;
+  delete pairInfo.weightChange;
+  delete pairInfo.weightVolume;
 }
 
 async function populateQuoteContract(pairInfos: WhaleExPairInfo[]): Promise<void> {

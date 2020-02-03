@@ -64,8 +64,6 @@ export interface WhaleExPairInfo extends PairInfo {
   quoteCurrency: string;
   quotePrecision: number;
   precision: number;
-  baseVolume: string;
-  priceChangePercent: string;
   enable: boolean;
   status: 'ON' | 'OFF';
   baseContract: string;
