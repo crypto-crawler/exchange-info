@@ -53,7 +53,6 @@ export interface NewdexPairInfo extends PairInfo {
   manager: string;
   list_time: string;
   pair_symbol: string;
-  current_price: string;
   pair_fee: number;
 }
 

@@ -59,6 +59,8 @@ function populateCommonFields(pairInfo: NewdexPairInfo): void {
   pairInfo.base_contract = pairInfo.base_symbol.contract;
   pairInfo.quote_contract = pairInfo.quote_symbol.contract;
   pairInfo.spot_enabled = true;
+
+  delete pairInfo.current_price;
 }
 /* eslint-enable no-param-reassign */
 
