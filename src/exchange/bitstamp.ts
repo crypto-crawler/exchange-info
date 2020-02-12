@@ -5,7 +5,7 @@ import { ExchangeInfo } from '../pojo/exchange_info';
 import { BitstampPairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
 function extractRawPair(pairInfo: BitstampPairInfo): string {
-  return pairInfo.name;
+  return pairInfo.url_symbol;
 }
 
 function extractNormalizedPair(pairInfo: BitstampPairInfo): string {
