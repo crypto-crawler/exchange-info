@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
-import normalize from 'crypto-pair';
+import { normalizePair } from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, PairInfo, ZBPairInfo } from '../pojo/pair_info';
 
@@ -19,7 +19,7 @@ export async function getPairs(
     p.exchange = 'ZB';
     p.raw_pair = key;
     p.normalized_pair = key.toUpperCase();
-    assert.equal(p.normalized_pair, normalize(p.raw_pair, 'ZB'));
+    assert.equal(p.normalized_pair, normalizePair(p.raw_pair, 'ZB'));
     p.price_precision = 0; // TODO
     p.base_precision = 0;
     p.quote_precision = 0;

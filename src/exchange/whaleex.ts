@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
-import normalize from 'crypto-pair';
+import { normalizePair } from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, PairInfo, WhaleExPairInfo } from '../pojo/pair_info';
 import { calcPrecision } from '../utils';
@@ -12,7 +12,7 @@ function populateCommonFields(pairInfo: WhaleExPairInfo): void {
   pairInfo.normalized_pair = `${
     pairInfo.baseCurrency === 'KEY' ? 'MYKEY' : pairInfo.baseCurrency
   }_${pairInfo.quoteCurrency}`;
-  assert.equal(pairInfo.normalized_pair, normalize(pairInfo.raw_pair, 'WhaleEx'));
+  assert.equal(pairInfo.normalized_pair, normalizePair(pairInfo.raw_pair, 'WhaleEx'));
   pairInfo.price_precision = calcPrecision(pairInfo.tickSize);
   pairInfo.base_precision = pairInfo.basePrecision;
   pairInfo.quote_precision = pairInfo.quotePrecision;

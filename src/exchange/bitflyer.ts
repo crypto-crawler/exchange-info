@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
-import normalize from 'crypto-pair';
+import { normalizePair } from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
@@ -26,7 +26,7 @@ export async function getPairs(
   const arr2 = arr.map(rawInfo => {
     const rawPair = extractRawPair(rawInfo);
     const normalizedPair = extractNormalizedPair(rawInfo);
-    assert.equal(normalizedPair, normalize(rawPair, 'bitFlyer'));
+    assert.equal(normalizedPair, normalizePair(rawPair, 'bitFlyer'));
     const pairInfo: PairInfo = {
       exchange: 'bitFlyer',
       raw_pair: rawPair,

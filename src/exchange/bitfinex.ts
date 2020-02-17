@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert';
 import axios from 'axios';
-import normalize from 'crypto-pair';
+import { normalizePair } from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { BitfinexPairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
 
@@ -43,7 +43,7 @@ function populateCommonFields(
   pairInfo.exchange = 'Bitfinex';
   pairInfo.raw_pair = pairInfo.pair;
   pairInfo.normalized_pair = extractNormalizedPair(pairInfo, mapping);
-  assert.equal(pairInfo.normalized_pair, normalize(pairInfo.raw_pair, 'Bitfinex'));
+  assert.equal(pairInfo.normalized_pair, normalizePair(pairInfo.raw_pair, 'Bitfinex'));
   pairInfo.base_precision = 8; // see https://github.com/bitfinexcom/bfx-api-node-util/blob/master/lib/precision.js
   pairInfo.quote_precision = pairInfo.price_precision;
   pairInfo.min_base_quantity = parseFloat(pairInfo.minimum_order_size);

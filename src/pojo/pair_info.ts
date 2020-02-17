@@ -15,8 +15,6 @@ export interface PairInfo {
   spot_enabled?: boolean;
   futures_enabled?: boolean;
   swap_enabled?: boolean;
-  deposit_enabled?: boolean;
-  withdraw_enabled?: boolean;
   [key: string]: any;
 }
 
