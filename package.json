@@ -1,6 +1,6 @@
 {
   "name": "exchange-info",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Get everything you need to know about a crypto exchange.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -41,8 +41,8 @@
     "@types/node": "^13.7.1",
     "@types/node-fetch": "^2.5.4",
     "@types/yargs": "^15.0.3",
-    "@typescript-eslint/eslint-plugin": "^2.19.2",
-    "@typescript-eslint/parser": "^2.19.2",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.10.0",

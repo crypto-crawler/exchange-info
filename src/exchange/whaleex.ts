@@ -85,7 +85,7 @@ export async function getExchangeInfo(
     name: 'WhaleEx',
     api_doc: 'https://github.com/WhaleEx/API',
     websocket_endpoint: 'wss://www.whaleex.com/ws/websocket',
-    restful_endpoint: 'https://api.whaleex.com',
+    restful_endpoint: 'https://www.whaleex.com',
     is_dex: true,
     blockchain: 'EOS',
     status: true,
