@@ -5,6 +5,8 @@ import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, PairInfo, WhaleExPairInfo } from '../pojo/pair_info';
 import { calcPrecision } from '../utils';
 
+const RESTFUL_API_DOMAIN = 'www.whaleex.com';
+
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: WhaleExPairInfo): void {
   pairInfo.exchange = 'WhaleEx';
@@ -33,7 +35,7 @@ function populateCommonFields(pairInfo: WhaleExPairInfo): void {
 }
 
 async function populateQuoteContract(pairInfos: WhaleExPairInfo[]): Promise<void> {
-  const response = await axios.get('https://api.whaleex.com/BUSINESS/api/public/currency');
+  const response = await axios.get(`https://${RESTFUL_API_DOMAIN}/BUSINESS/api/public/currency`);
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
 
@@ -64,7 +66,7 @@ async function populateQuoteContract(pairInfos: WhaleExPairInfo[]): Promise<void
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  const response = await axios.get('https://api.whaleex.com/BUSINESS/api/public/symbol');
+  const response = await axios.get(`https://${RESTFUL_API_DOMAIN}/BUSINESS/api/public/symbol`);
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
 
@@ -85,7 +87,7 @@ export async function getExchangeInfo(
     name: 'WhaleEx',
     api_doc: 'https://github.com/WhaleEx/API',
     websocket_endpoint: 'wss://www.whaleex.com/ws/websocket',
-    restful_endpoint: 'https://www.whaleex.com',
+    restful_endpoint: `https://${RESTFUL_API_DOMAIN}`,
     is_dex: true,
     blockchain: 'EOS',
     status: true,
