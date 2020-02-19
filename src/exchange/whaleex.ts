@@ -5,7 +5,7 @@ import { ExchangeInfo } from '../pojo/exchange_info';
 import { convertArrayToMap, PairInfo, WhaleExPairInfo } from '../pojo/pair_info';
 import { calcPrecision } from '../utils';
 
-const RESTFUL_API_DOMAIN = 'www.whaleex.com';
+const RESTFUL_API_DOMAIN = 'api.whaleex.com';
 
 /* eslint-disable no-param-reassign */
 function populateCommonFields(pairInfo: WhaleExPairInfo): void {

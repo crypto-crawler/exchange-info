@@ -1,6 +1,6 @@
 {
   "name": "exchange-info",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Get everything you need to know about a crypto exchange.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/soulmachine/exchange-info#readme",
   "devDependencies": {
-    "@types/node": "^13.7.1",
+    "@types/node": "^13.7.2",
     "@types/node-fetch": "^2.5.4",
     "@types/yargs": "^15.0.3",
     "@typescript-eslint/eslint-plugin": "^2.20.0",
