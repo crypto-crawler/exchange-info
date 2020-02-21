@@ -27,6 +27,10 @@ function populateCommonFields(pairInfo: BinancePairInfo): void {
   );
   pairInfo.spot_enabled = pairInfo.isSpotTradingAllowed;
   pairInfo.futures_enabled = pairInfo.isMarginTradingAllowed;
+
+  pairInfo.filters.forEach(f => {
+    delete f.maxQty;
+  });
 }
 /* eslint-enable no-param-reassign */
 
@@ -38,6 +42,12 @@ type Info = {
   minOrderValue: string;
   maxMarketOrderQty?: string;
   minMarketOrderQty?: string;
+  filters: {
+    filterType: string;
+    maxPrice: string;
+    minPrice: string;
+    tickSize: string;
+  }[];
 };
 
 async function getPairPrecision(rawPair: string): Promise<Info> {

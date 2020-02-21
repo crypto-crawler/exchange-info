@@ -29,6 +29,7 @@ function populateCommonFields(pairInfo: WhaleExPairInfo): void {
   delete pairInfo.lastPrice;
   delete pairInfo.priceChangePercent;
   delete pairInfo.quoteVolume;
+  delete pairInfo.updatedTime;
   delete pairInfo.weight;
   delete pairInfo.weightChange;
   delete pairInfo.weightVolume;
