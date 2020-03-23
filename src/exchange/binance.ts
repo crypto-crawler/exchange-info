@@ -1,5 +1,5 @@
 import { strict as assert } from 'assert';
-import axios from 'axios';
+import Axios from 'axios';
 import { normalizePair } from 'crypto-pair';
 import { ExchangeInfo } from '../pojo/exchange_info';
 import { BinancePairInfo, convertArrayToMap, PairInfo } from '../pojo/pair_info';
@@ -18,7 +18,6 @@ function populateCommonFields(pairInfo: BinancePairInfo): void {
   pairInfo.base_precision = calcPrecision(
     pairInfo.filters.filter(x => x.filterType === 'LOT_SIZE')[0].stepSize,
   );
-  pairInfo.quote_precision = pairInfo.quotePrecision;
   pairInfo.min_quote_quantity = parseFloat(
     pairInfo.filters.filter(x => x.filterType === 'MIN_NOTIONAL')[0].minNotional,
   );
@@ -51,7 +50,7 @@ type Info = {
 };
 
 async function getPairPrecision(rawPair: string): Promise<Info> {
-  const response = await axios.get(
+  const response = await Axios.get(
     `https://www.binance.com/gateway-api/v1/public/asset-service/product/get-exchange-info?symbol=${rawPair}`,
   );
   assert.equal(response.status, 200);
@@ -79,7 +78,7 @@ export async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<
 export async function getPairs(
   filter: 'All' | 'Spot' | 'Futures' | 'Swap' = 'All',
 ): Promise<{ [key: string]: PairInfo }> {
-  const response = await axios.get('https://api.binance.com/api/v3/exchangeInfo');
+  const response = await Axios.get('https://api.binance.com/api/v3/exchangeInfo');
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
 

@@ -89,7 +89,7 @@ export async function getExchangeInfo(
     restful_endpoint: 'https://api.huobi.pro',
     is_dex: false,
     status: true,
-    maker_fee: 0.002, // see https://www.hbg.com/en-us/fee/
+    maker_fee: 0.002, // see https://www.huobi.com/en-us/fee/
     taker_fee: 0.002,
     pairs: {},
   };
