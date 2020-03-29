@@ -14,7 +14,7 @@ export async function getPairs(
 
   const result: { [key: string]: PoloniexPairInfo } = {};
   const myMap = response.data as { [key: string]: PoloniexPairInfo };
-  Object.keys(myMap).forEach(key => {
+  Object.keys(myMap).forEach((key) => {
     const p = myMap[key];
     p.exchange = 'Poloniex';
     p.raw_pair = key;

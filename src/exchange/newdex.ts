@@ -8,7 +8,7 @@ const promiseAny = require('promise.any');
 
 async function getTableRowsRobust(table: string, lower_bound?: number): Promise<TableRows> {
   return promiseAny(
-    EOS_API_ENDPOINTS.map(url =>
+    EOS_API_ENDPOINTS.map((url) =>
       getTableRows(
         {
           code: 'newdexpublic',
@@ -74,15 +74,15 @@ export async function getPairs(
     // eslint-disable-next-line no-await-in-loop
     const result = await getTableRowsRobust('exchangepair', lowerBound);
     let pairs = result.rows as NewdexPairInfo[];
-    if (filter !== 'All') pairs = pairs.filter(x => x.status === 0);
+    if (filter !== 'All') pairs = pairs.filter((x) => x.status === 0);
     arr.push(...pairs);
     more = result.more;
     if (pairs.length > 0) {
-      lowerBound = Math.max(...pairs.map(x => x.pair_id)) + 1;
+      lowerBound = Math.max(...pairs.map((x) => x.pair_id)) + 1;
     }
   }
 
-  arr.forEach(p => populateCommonFields(p));
+  arr.forEach((p) => populateCommonFields(p));
 
   return convertArrayToMap(arr);
 }
@@ -98,7 +98,7 @@ export async function getExchangeInfo(
     is_dex: true,
     blockchain: 'EOS',
     status: true,
-    maker_fee: 0.002,
+    maker_fee: 0.002, // see https://newdex.zendesk.com/hc/en-us/articles/360015745751-Rate-standard
     taker_fee: 0.002,
     pairs: {},
   };

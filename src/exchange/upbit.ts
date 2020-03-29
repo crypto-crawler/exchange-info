@@ -23,7 +23,7 @@ export async function getPairs(
   assert.equal(response.statusText, '');
   const arr = response.data as Array<UpbitPairInfo>;
 
-  arr.forEach(p => {
+  arr.forEach((p) => {
     /* eslint-disable no-param-reassign */
     p.exchange = 'Upbit';
     p.raw_pair = extractRawPair(p);

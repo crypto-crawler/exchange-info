@@ -20,10 +20,10 @@ export async function getPairs(
   assert.equal(response.status, 200);
   assert.equal(response.statusText, 'OK');
   const arr = (response.data as Array<{ product_code: string; alias: string }>).filter(
-    x => x.product_code.includes('_') && !x.product_code.startsWith('FX_'),
+    (x) => x.product_code.includes('_') && !x.product_code.startsWith('FX_'),
   );
 
-  const arr2 = arr.map(rawInfo => {
+  const arr2 = arr.map((rawInfo) => {
     const rawPair = extractRawPair(rawInfo);
     const normalizedPair = extractNormalizedPair(rawInfo);
     assert.equal(normalizedPair, normalizePair(rawPair, 'bitFlyer'));

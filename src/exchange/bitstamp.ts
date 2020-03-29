@@ -21,7 +21,7 @@ export async function getPairs(
 
   let arr = response.data as BitstampPairInfo[];
 
-  arr.forEach(p => {
+  arr.forEach((p) => {
     /* eslint-disable no-param-reassign */
     p.exchange = 'Bitstamp';
     p.raw_pair = extractRawPair(p);
@@ -38,7 +38,7 @@ export async function getPairs(
   });
 
   if (filter !== 'All') {
-    arr = arr.filter(x => x.trading === 'Enabled');
+    arr = arr.filter((x) => x.trading === 'Enabled');
     if (filter !== 'Spot') arr = [];
   }
 

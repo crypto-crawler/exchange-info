@@ -23,9 +23,9 @@ export async function getPairs(
   assert.equal(response.data.status, 'ok');
 
   let arr = response.data.data as Array<HuobiPairInfo>;
-  arr = arr.filter(x => x.state === 'online');
+  arr = arr.filter((x) => x.state === 'online');
 
-  arr.forEach(p => {
+  arr.forEach((p) => {
     /* eslint-disable no-param-reassign */
     p.exchange = 'Huobi';
     p.raw_pair = extractRawPair(p);
@@ -56,11 +56,11 @@ export async function getPairs(
     const infos = (await axios.get('https://www.huobi.com/-/x/pro/v2/beta/common/currencies')).data
       .data as Info[];
     const infoMap: { [key: string]: Info } = {};
-    infos.forEach(info => {
+    infos.forEach((info) => {
       infoMap[info.display_name] = info;
     });
 
-    arr = arr.filter(pairInfo => {
+    arr = arr.filter((pairInfo) => {
       let baseSymbol = pairInfo.normalized_pair.split('_')[0];
       if (baseSymbol === 'HYDRO') baseSymbol = 'HOT'; // restore
       if (!(baseSymbol in infoMap)) throw Error(baseSymbol);

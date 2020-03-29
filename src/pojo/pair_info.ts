@@ -21,7 +21,7 @@ export interface PairInfo {
 // eslint-disable-next-line import/prefer-default-export
 export function convertArrayToMap(arr: PairInfo[]): { [key: string]: PairInfo } {
   const map: { [key: string]: PairInfo } = {};
-  arr.forEach(p => {
+  arr.forEach((p) => {
     map[p.normalized_pair] = p;
   });
   return map;

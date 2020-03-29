@@ -5,7 +5,7 @@ import getExchangeInfo, { SupportedExchange, SUPPORTED_EXCHANGES } from './index
 
 const { argv } = yargs
   // eslint-disable-next-line no-shadow
-  .command('$0 <exchange> [filter]', 'Get exchange info', yargs => {
+  .command('$0 <exchange> [filter]', 'Get exchange info', (yargs) => {
     yargs
       .positional('exchange', {
         choices: SUPPORTED_EXCHANGES,

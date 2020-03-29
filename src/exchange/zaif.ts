@@ -23,7 +23,7 @@ export async function getPairs(
   assert.equal(response.statusText, 'OK');
   const arr = response.data as Array<ZaifPairInfo>;
 
-  arr.forEach(p => {
+  arr.forEach((p) => {
     /* eslint-disable no-param-reassign */
     p.exchange = 'Zaif';
     p.raw_pair = extractRawPair(p);

@@ -14,7 +14,7 @@ export async function getPairs(
 
   const arr: ZBPairInfo[] = [];
   const myMap = response.data as { [key: string]: ZBPairInfo };
-  Object.keys(myMap).forEach(key => {
+  Object.keys(myMap).forEach((key) => {
     const p = myMap[key];
     p.exchange = 'ZB';
     p.raw_pair = key;

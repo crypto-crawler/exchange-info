@@ -12,7 +12,7 @@ export async function getPairs(
   assert.equal(response.data.code, 200);
   const map = response.data.data as { [key: string]: PairInfo };
 
-  Object.keys(map).forEach(key => {
+  Object.keys(map).forEach((key) => {
     const pairInfo = map[key];
     pairInfo.exchange = 'MXC';
     pairInfo.raw_pair = key;

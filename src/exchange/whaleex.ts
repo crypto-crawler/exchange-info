@@ -49,15 +49,15 @@ async function populateQuoteContract(pairInfos: WhaleExPairInfo[]): Promise<void
     status: string;
   };
   const arr = (response.data as Array<CurrencyInfo>).filter(
-    x => x.quotable && x.visible && x.status === 'ON',
+    (x) => x.quotable && x.visible && x.status === 'ON',
   );
 
   const map = new Map<string, string>();
-  arr.forEach(x => {
+  arr.forEach((x) => {
     // assert.equal(x.shortName, x.token); // e.g., BTC, EBTC
     map.set(x.shortName, x.contract);
   });
-  pairInfos.forEach(pairInfo => {
+  pairInfos.forEach((pairInfo) => {
     const token = pairInfo.normalized_pair.split('_')[1];
     pairInfo.quote_contract = map.get(token);
   });
@@ -72,9 +72,9 @@ export async function getPairs(
   assert.equal(response.statusText, 'OK');
 
   let arr = response.data as Array<WhaleExPairInfo>;
-  if (filter !== 'All') arr = arr.filter(x => x.enable && x.status === 'ON');
+  if (filter !== 'All') arr = arr.filter((x) => x.enable && x.status === 'ON');
 
-  arr.forEach(p => populateCommonFields(p));
+  arr.forEach((p) => populateCommonFields(p));
 
   await populateQuoteContract(arr);
 

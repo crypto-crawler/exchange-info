@@ -1,6 +1,6 @@
 {
   "name": "exchange-info",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "Get everything you need to know about a crypto exchange.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,29 +38,29 @@
   },
   "homepage": "https://github.com/soulmachine/exchange-info#readme",
   "devDependencies": {
-    "@types/node": "^13.7.4",
-    "@types/node-fetch": "^2.5.4",
-    "@types/yargs": "^15.0.3",
-    "@typescript-eslint/eslint-plugin": "^2.20.0",
-    "@typescript-eslint/parser": "^2.20.0",
+    "@types/node": "^13.9.5",
+    "@types/node-fetch": "^2.5.5",
+    "@types/yargs": "^15.0.4",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
     "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-jest": "^23.7.0",
-    "eslint-plugin-markdown": "^1.0.1",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-markdown": "^1.0.2",
     "eslint-plugin-prettier": "^3.1.2",
-    "prettier": "^1.19.1",
-    "typescript": "^3.8.2"
+    "prettier": "^2.0.2",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "assert": "^2.0.0",
     "axios": "^0.19.2",
-    "crypto-pair": "0.1.2",
+    "crypto-pair": "0.1.6",
     "eos-utils": "0.1.8",
     "eosjs": "^20.0.3",
     "node-fetch": "^2.6.0",
     "promise.any": "^2.0.1",
-    "yargs": "^15.1.0"
+    "yargs": "^15.3.1"
   }
 }

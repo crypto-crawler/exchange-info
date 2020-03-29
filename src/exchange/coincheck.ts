@@ -18,14 +18,14 @@ export async function getPairs(
   assert.equal(response.statusText, 'OK');
   const rawPairInfo = response.data as RawPairInfo;
   const pairs: string[] = [];
-  Object.keys(rawPairInfo.btc).forEach(baseCurrency => {
+  Object.keys(rawPairInfo.btc).forEach((baseCurrency) => {
     pairs.push(`${baseCurrency}_BTC`);
   });
-  Object.keys(rawPairInfo.jpy).forEach(baseCurrency => {
+  Object.keys(rawPairInfo.jpy).forEach((baseCurrency) => {
     pairs.push(`${baseCurrency}_JPY`.toUpperCase());
   });
 
-  const arr = pairs.map(p => {
+  const arr = pairs.map((p) => {
     const pairInfo: PairInfo = {
       exchange: 'Coincheck',
       raw_pair: p,

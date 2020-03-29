@@ -21,7 +21,7 @@ export async function getPairs(
   assert.equal(response.statusText, 'OK');
   let arr = response.data as Array<CoinbasePairInfo>;
 
-  arr.forEach(p => {
+  arr.forEach((p) => {
     /* eslint-disable no-param-reassign */
     p.exchange = 'Coinbase';
     p.raw_pair = extractRawPair(p);
@@ -38,10 +38,10 @@ export async function getPairs(
   });
 
   if (filter !== 'All') {
-    arr = arr.filter(x => x.status === 'online');
+    arr = arr.filter((x) => x.status === 'online');
 
     if (filter === 'Futures') {
-      arr = arr.filter(x => x.futures_enabled);
+      arr = arr.filter((x) => x.futures_enabled);
     }
   }
 

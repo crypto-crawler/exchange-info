@@ -26,7 +26,7 @@ export async function getPairs(
   assert.equal(response.data.msg, 'suc');
   const arr = response.data.data as BikiPairInfo[];
 
-  arr.forEach(p => populateCommonFields(p));
+  arr.forEach((p) => populateCommonFields(p));
 
   return convertArrayToMap(arr);
 }

@@ -21,9 +21,9 @@ export async function getPairs(
   assert.equal(response.data.code, 0);
 
   let arr = response.data.data as Array<OKExSpotPairInfo>;
-  if (filter !== 'All') arr = arr.filter(x => x.online);
+  if (filter !== 'All') arr = arr.filter((x) => x.online);
 
-  arr.forEach(p => {
+  arr.forEach((p) => {
     /* eslint-disable no-param-reassign */
     p.exchange = 'OKEx_Spot';
     p.raw_pair = extractRawPair(p);
@@ -42,10 +42,10 @@ export async function getPairs(
   if (filter !== 'All') {
     switch (filter) {
       case 'Spot':
-        arr = arr.filter(x => x.spot_enabled);
+        arr = arr.filter((x) => x.spot_enabled);
         break;
       case 'Futures':
-        arr = arr.filter(x => x.futures_enabled);
+        arr = arr.filter((x) => x.futures_enabled);
         break;
       default:
         throw Error(`Unsupported filter ${filter}`);

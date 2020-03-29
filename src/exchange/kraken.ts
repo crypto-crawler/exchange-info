@@ -80,7 +80,7 @@ export async function getPairs(
   const data = response.data.result as { [key: string]: KrakenPairInfo };
   const arr: KrakenPairInfo[] = [];
 
-  Object.keys(data).forEach(rawPair => {
+  Object.keys(data).forEach((rawPair) => {
     const p = data[rawPair];
     if (!p.wsname) return;
 

@@ -13,21 +13,21 @@ function populateCommonFields(pairInfo: BinancePairInfo): void {
   assert.equal(pairInfo.normalized_pair, normalizePair(pairInfo.raw_pair, 'Binance'));
 
   pairInfo.price_precision = calcPrecision(
-    pairInfo.filters.filter(x => x.filterType === 'PRICE_FILTER')[0].tickSize,
+    pairInfo.filters.filter((x) => x.filterType === 'PRICE_FILTER')[0].tickSize,
   );
   pairInfo.base_precision = calcPrecision(
-    pairInfo.filters.filter(x => x.filterType === 'LOT_SIZE')[0].stepSize,
+    pairInfo.filters.filter((x) => x.filterType === 'LOT_SIZE')[0].stepSize,
   );
   pairInfo.min_quote_quantity = parseFloat(
-    pairInfo.filters.filter(x => x.filterType === 'MIN_NOTIONAL')[0].minNotional,
+    pairInfo.filters.filter((x) => x.filterType === 'MIN_NOTIONAL')[0].minNotional,
   );
   pairInfo.min_base_quantity = parseFloat(
-    pairInfo.filters.filter(x => x.filterType === 'LOT_SIZE')[0].minQty,
+    pairInfo.filters.filter((x) => x.filterType === 'LOT_SIZE')[0].minQty,
   );
   pairInfo.spot_enabled = pairInfo.isSpotTradingAllowed;
   pairInfo.futures_enabled = pairInfo.isMarginTradingAllowed;
 
-  pairInfo.filters.forEach(f => {
+  pairInfo.filters.forEach((f) => {
     delete f.maxQty;
   });
 }
@@ -61,7 +61,7 @@ async function getPairPrecision(rawPair: string): Promise<Info> {
 // for debug only
 export async function populatePrecisions(pairInfos: BinancePairInfo[]): Promise<void> {
   const requests: Promise<Info>[] = [];
-  pairInfos.forEach(pairInfo => {
+  pairInfos.forEach((pairInfo) => {
     requests.push(getPairPrecision(pairInfo.raw_pair));
   });
   const infos = await Promise.all(requests);
@@ -84,13 +84,13 @@ export async function getPairs(
 
   let arr = response.data.symbols as Array<BinancePairInfo>;
   if (filter !== 'All') {
-    arr = arr.filter(x => x.status === 'TRADING');
+    arr = arr.filter((x) => x.status === 'TRADING');
     switch (filter) {
       case 'Spot':
-        arr = arr.filter(x => x.isSpotTradingAllowed);
+        arr = arr.filter((x) => x.isSpotTradingAllowed);
         break;
       case 'Futures':
-        arr = arr.filter(x => x.isMarginTradingAllowed);
+        arr = arr.filter((x) => x.isMarginTradingAllowed);
         break;
       case 'Swap':
         arr = [];
@@ -100,7 +100,7 @@ export async function getPairs(
     }
   }
 
-  arr.forEach(p => populateCommonFields(p));
+  arr.forEach((p) => populateCommonFields(p));
 
   // await populatePrecisions(arr);
 

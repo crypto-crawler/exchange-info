@@ -8,7 +8,7 @@ async function getNameMapping(): Promise<{ [key: string]: string }> {
   const response = await axios.get('https://api-pub.bitfinex.com/v2/conf/pub:map:currency:sym');
   const arr = response.data[0] as [string, string][];
   const result: { [key: string]: string } = {};
-  arr.sort().forEach(x => {
+  arr.sort().forEach((x) => {
     const [key, value] = x;
     result[key] = value.toUpperCase();
   });
@@ -61,15 +61,15 @@ export async function getPairs(
 
   const mapping = await getNameMapping();
   let arr = (response.data as BitfinexPairInfo[]).filter(
-    pairInfo => !pairInfo.pair.endsWith(':ustf0'),
+    (pairInfo) => !pairInfo.pair.endsWith(':ustf0'),
   ); // Remove Derivatives
 
-  arr.forEach(p => populateCommonFields(p, mapping));
+  arr.forEach((p) => populateCommonFields(p, mapping));
 
   if (filter !== 'All') {
-    arr = arr.filter(p => p.expiration === 'NA');
+    arr = arr.filter((p) => p.expiration === 'NA');
     if (filter === 'Futures') {
-      arr = arr.filter(p => p.futures_enabled);
+      arr = arr.filter((p) => p.futures_enabled);
     }
   }
 
